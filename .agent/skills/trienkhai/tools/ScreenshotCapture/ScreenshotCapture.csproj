@@ -9,8 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\..\Bai_6_1_RetailSalesSystem\RetailSalesSystem\RetailSalesSystem.csproj" />
-    <ProjectReference Include="..\..\..\..\..\Bai_6_2_HRMPayrollSystem\HRMPayrollSystem\HRMPayrollSystem.csproj" />
+    <ProjectReference Include="..\..\..\..\..\bai6.1\bai6.1\bai6.1.csproj" />
+    <ProjectReference Include="..\..\..\..\..\bai6.2\bai6.2\bai6.2.csproj" />
   </ItemGroup>
 
 </Project>

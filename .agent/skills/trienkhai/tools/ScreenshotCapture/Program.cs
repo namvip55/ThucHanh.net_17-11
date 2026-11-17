@@ -18,7 +18,7 @@ namespace ScreenshotCapture
 
             string baseDir = AppDomain.CurrentDomain.BaseDirectory;
             DirectoryInfo? cur = new DirectoryInfo(baseDir);
-            while (cur != null && !Directory.Exists(Path.Combine(cur.FullName, "Bai_6_1_RetailSalesSystem")))
+            while (cur != null && !Directory.Exists(Path.Combine(cur.FullName, "bai6.1")))
             {
                 cur = cur.Parent;
             }
@@ -345,7 +345,7 @@ namespace ScreenshotCapture
         static void CaptureBai6_1(string root)
         {
             Console.WriteLine("\n=== BẮT ĐẦU CHỤP BÀI 6.1 (RETAIL SALES SYSTEM) ===");
-            string imgDir = Path.Combine(root, "Bai_6_1_RetailSalesSystem", "images");
+            string imgDir = Path.Combine(root, "bai6.1", "images");
             Directory.CreateDirectory(imgDir);
 
             // 1. 01_main_screen.png: Giao diện chính Bán hàng (POS)
@@ -437,7 +437,7 @@ namespace ScreenshotCapture
         static void CaptureBai6_2(string root)
         {
             Console.WriteLine("\n=== BẮT ĐẦU CHỤP BÀI 6.2 (HRM & PAYROLL SYSTEM) ===");
-            string imgDir = Path.Combine(root, "Bai_6_2_HRMPayrollSystem", "images");
+            string imgDir = Path.Combine(root, "bai6.2", "images");
             Directory.CreateDirectory(imgDir);
 
             // 1. 01_main_screen.png: Giao diện chính Hồ sơ Nhân sự
