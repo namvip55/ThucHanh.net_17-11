@@ -55,6 +55,7 @@ namespace RetailSalesSystem.GUI
             this.Font = new Font("Segoe UI", 9.5f);
             this.BackColor = Color.White;
             this.ForeColor = Color.Black;
+            this.AutoScaleMode = AutoScaleMode.None;
 
             errorProvider = new ErrorProvider { ContainerControl = this };
 
@@ -66,34 +67,46 @@ namespace RetailSalesSystem.GUI
             statusStrip.Items.AddRange(new ToolStripItem[] { lblStatusRecords, lblStatusTotalStock, lblStatusInventoryValue });
 
             // Top Header Panel
-            Panel pnlTop = new Panel { Dock = DockStyle.Top, Height = 65, Padding = new Padding(15), BackColor = Color.White, Name = "pnlTop" };
+            Panel pnlTop = new Panel { Dock = DockStyle.Top, Height = 58, Padding = new Padding(12, 6, 12, 6), BackColor = Color.White, Name = "pnlTop" };
             Label lblTitle = new Label
             {
                 Name = "lblTitle",
                 Text = "QUẢN LÝ DANH MỤC SẢN PHẨM / HÀNG HÓA",
-                Font = new Font("Segoe UI", 13f, FontStyle.Bold),
+                Font = new Font("Segoe UI", 12f, FontStyle.Bold),
                 ForeColor = Color.Black,
+                Dock = DockStyle.Top,
                 AutoSize = true,
-                Location = new Point(15, 8)
+                UseMnemonic = false
             };
             Label lblSub = new Label
             {
                 Name = "lblSub",
                 Text = "Tìm kiếm hỗ trợ mã vạch, tên sản phẩm sử dụng SqlParameter (%) • Xuất CSV UTF-8 BOM",
-                Font = new Font("Segoe UI", 9f, FontStyle.Italic),
+                Font = new Font("Segoe UI", 8.5f, FontStyle.Italic),
                 ForeColor = Color.DimGray,
+                Dock = DockStyle.Top,
                 AutoSize = true,
-                Location = new Point(17, 36)
+                UseMnemonic = false
             };
-            pnlTop.Controls.AddRange(new Control[] { lblTitle, lblSub });
+            pnlTop.Controls.Add(lblSub);
+            pnlTop.Controls.Add(lblTitle);
 
-            // Search panel
-            Panel pnlSearch = new Panel { Dock = DockStyle.Top, Height = 50, Padding = new Padding(15, 5, 15, 5), BackColor = Color.White, Name = "pnlSearch" };
-            Label lblSearch = new Label { Name = "lblSearch", Text = "Tìm kiếm:", Location = new Point(15, 15), AutoSize = true, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), ForeColor = Color.Black };
-            txtTimKiem = new TextBox { Name = "txtTimKiem", Location = new Point(90, 12), Width = 320, PlaceholderText = "Nhập tên hoặc mã sản phẩm/mã vạch...", BackColor = Color.White, ForeColor = Color.Black };
-            btnTimKiem = new Button { Name = "btnTimKiem", Text = "Tìm kiếm", Location = new Point(420, 10), Width = 95, Height = 28, BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System };
-            btnTatCa = new Button { Name = "btnTatCa", Text = "Hiện tất cả", Location = new Point(525, 10), Width = 95, Height = 28, BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System };
-            btnXuatCSV = new Button { Name = "btnXuatCSV", Text = "Xuất CSV (Excel)", Location = new Point(630, 10), Width = 130, Height = 28, BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System };
+            // Search panel (FlowLayoutPanel responsive)
+            FlowLayoutPanel pnlSearch = new FlowLayoutPanel
+            {
+                Dock = DockStyle.Top,
+                AutoSize = true,
+                FlowDirection = FlowDirection.LeftToRight,
+                WrapContents = false,
+                Padding = new Padding(10, 6, 10, 6),
+                BackColor = Color.FromArgb(250, 251, 253),
+                Name = "pnlSearch"
+            };
+            Label lblSearch = new Label { Name = "lblSearch", Text = "Tìm kiếm:", AutoSize = true, Anchor = AnchorStyles.Left, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), Margin = new Padding(2, 6, 6, 6) };
+            txtTimKiem = new TextBox { Name = "txtTimKiem", Width = 300, PlaceholderText = "Nhập tên hoặc mã sản phẩm/mã vạch...", BackColor = Color.White, ForeColor = Color.Black, Margin = new Padding(3, 4, 8, 4) };
+            btnTimKiem = new Button { Name = "btnTimKiem", Text = "🔍 Tìm kiếm", Width = 100, Height = 30, BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System, Margin = new Padding(3, 3, 6, 3) };
+            btnTatCa = new Button { Name = "btnTatCa", Text = "🔄 Hiện tất cả", Width = 105, Height = 30, BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System, Margin = new Padding(3, 3, 6, 3) };
+            btnXuatCSV = new Button { Name = "btnXuatCSV", Text = "📊 Xuất CSV (Excel)", Width = 140, Height = 30, BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System, Margin = new Padding(3, 3, 6, 3) };
 
             btnTimKiem.Click += (s, e) => TimKiem();
             btnTatCa.Click += (s, e) => { txtTimKiem.Clear(); LoadData(); };
@@ -103,45 +116,74 @@ namespace RetailSalesSystem.GUI
 
             pnlSearch.Controls.AddRange(new Control[] { lblSearch, txtTimKiem, btnTimKiem, btnTatCa, btnXuatCSV });
 
-            // Bottom Input Form
+            // Bottom Input Form (TableLayoutPanel responsive)
             GroupBox grpInput = new GroupBox
             {
                 Name = "grpInput",
                 Text = "Thông tin chi tiết sản phẩm",
                 Dock = DockStyle.Bottom,
                 Height = 175,
-                Padding = new Padding(10),
+                Padding = new Padding(10, 8, 10, 8),
                 BackColor = Color.White,
                 ForeColor = Color.Black
             };
 
-            Label lblMa = new Label { Name = "lblMa", Text = "Mã SP:", Location = new Point(20, 30), AutoSize = true, ForeColor = Color.Black };
-            txtMaSP = new TextBox { Name = "txtMaSP", Location = new Point(90, 27), Width = 150, BackColor = Color.White, ForeColor = Color.Black };
+            TableLayoutPanel tblInput = new TableLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                ColumnCount = 4,
+                RowCount = 3
+            };
+            tblInput.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+            tblInput.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 45F));
+            tblInput.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+            tblInput.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 55F));
 
-            Label lblTen = new Label { Name = "lblTen", Text = "Tên SP:", Location = new Point(270, 30), AutoSize = true, ForeColor = Color.Black };
-            txtTenSP = new TextBox { Name = "txtTenSP", Location = new Point(340, 27), Width = 320, BackColor = Color.White, ForeColor = Color.Black };
+            Label lblMa = new Label { Name = "lblMa", Text = "Mã SP:", Anchor = AnchorStyles.Left, AutoSize = true, Margin = new Padding(3, 6, 6, 6) };
+            txtMaSP = new TextBox { Name = "txtMaSP", Dock = DockStyle.Fill, BackColor = Color.White, ForeColor = Color.Black, Margin = new Padding(3, 3, 15, 3) };
 
-            Label lblGia = new Label { Name = "lblGia", Text = "Giá bán:", Location = new Point(20, 70), AutoSize = true, ForeColor = Color.Black };
-            numGiaBan = new NumericUpDown { Name = "numGiaBan", Location = new Point(90, 67), Width = 150, Maximum = 1000000000, Increment = 1000, BackColor = Color.White, ForeColor = Color.Black };
+            Label lblTen = new Label { Name = "lblTen", Text = "Tên SP:", Anchor = AnchorStyles.Left, AutoSize = true, Margin = new Padding(3, 6, 6, 6) };
+            txtTenSP = new TextBox { Name = "txtTenSP", Dock = DockStyle.Fill, BackColor = Color.White, ForeColor = Color.Black, Margin = new Padding(3, 3, 3, 3) };
 
-            Label lblTon = new Label { Name = "lblTon", Text = "Số lượng tồn:", Location = new Point(270, 70), AutoSize = true, ForeColor = Color.Black };
-            numSoLuongTon = new NumericUpDown { Name = "numSoLuongTon", Location = new Point(370, 67), Width = 120, Maximum = 100000, BackColor = Color.White, ForeColor = Color.Black };
+            Label lblGia = new Label { Name = "lblGia", Text = "Giá bán (VNĐ):", Anchor = AnchorStyles.Left, AutoSize = true, Margin = new Padding(3, 6, 6, 6) };
+            numGiaBan = new NumericUpDown { Name = "numGiaBan", Dock = DockStyle.Fill, Maximum = 1000000000, Increment = 1000, BackColor = Color.White, ForeColor = Color.Black, Margin = new Padding(3, 3, 15, 3) };
 
-            btnThem = new Button { Name = "btnThem", Text = "Thêm mới", Location = new Point(20, 115), Width = 100, Height = 34, BackColor = Color.White, ForeColor = Color.Black, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), FlatStyle = FlatStyle.System };
-            btnSua = new Button { Name = "btnSua", Text = "Cập nhật", Location = new Point(130, 115), Width = 100, Height = 34, BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System };
-            btnXoa = new Button { Name = "btnXoa", Text = "Xóa", Location = new Point(240, 115), Width = 100, Height = 34, BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System };
-            btnLamMoi = new Button { Name = "btnLamMoi", Text = "Làm mới", Location = new Point(350, 115), Width = 100, Height = 34, BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System };
+            Label lblTon = new Label { Name = "lblTon", Text = "Số lượng tồn:", Anchor = AnchorStyles.Left, AutoSize = true, Margin = new Padding(3, 6, 6, 6) };
+            numSoLuongTon = new NumericUpDown { Name = "numSoLuongTon", Dock = DockStyle.Fill, Maximum = 100000, BackColor = Color.White, ForeColor = Color.Black, Margin = new Padding(3, 3, 3, 3) };
+
+            FlowLayoutPanel pnlButtons = new FlowLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                FlowDirection = FlowDirection.LeftToRight,
+                AutoSize = true,
+                Margin = new Padding(0, 6, 0, 0)
+            };
+            tblInput.SetColumnSpan(pnlButtons, 4);
+
+            btnThem = new Button { Name = "btnThem", Text = "➕ Thêm mới", Width = 110, Height = 34, BackColor = Color.White, ForeColor = Color.Black, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), FlatStyle = FlatStyle.System, Margin = new Padding(0, 0, 8, 0) };
+            btnSua = new Button { Name = "btnSua", Text = "✏️ Cập nhật", Width = 110, Height = 34, BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System, Margin = new Padding(0, 0, 8, 0) };
+            btnXoa = new Button { Name = "btnXoa", Text = "🗑️ Xóa", Width = 100, Height = 34, BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System, Margin = new Padding(0, 0, 8, 0) };
+            btnLamMoi = new Button { Name = "btnLamMoi", Text = "🔄 Làm mới", Width = 110, Height = 34, BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System, Margin = new Padding(0, 0, 8, 0) };
 
             btnThem.Click += (s, e) => Them();
             btnSua.Click += (s, e) => Sua();
             btnXoa.Click += (s, e) => Xoa();
             btnLamMoi.Click += (s, e) => ClearForm();
 
-            grpInput.Controls.AddRange(new Control[] {
-                lblMa, txtMaSP, lblTen, txtTenSP,
-                lblGia, numGiaBan, lblTon, numSoLuongTon,
-                btnThem, btnSua, btnXoa, btnLamMoi
-            });
+            pnlButtons.Controls.AddRange(new Control[] { btnThem, btnSua, btnXoa, btnLamMoi });
+
+            tblInput.Controls.Add(lblMa, 0, 0);
+            tblInput.Controls.Add(txtMaSP, 1, 0);
+            tblInput.Controls.Add(lblTen, 2, 0);
+            tblInput.Controls.Add(txtTenSP, 3, 0);
+
+            tblInput.Controls.Add(lblGia, 0, 1);
+            tblInput.Controls.Add(numGiaBan, 1, 1);
+            tblInput.Controls.Add(lblTon, 2, 1);
+            tblInput.Controls.Add(numSoLuongTon, 3, 1);
+
+            tblInput.Controls.Add(pnlButtons, 0, 2);
+            grpInput.Controls.Add(tblInput);
 
             // Grid Container Panel
             Panel pnlGrid = new Panel { Dock = DockStyle.Fill, BackColor = Color.White, Name = "pnlGrid" };

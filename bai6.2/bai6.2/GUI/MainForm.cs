@@ -31,11 +31,13 @@ namespace HRMPayrollSystem.GUI
         {
             this.Text = "HỆ THỐNG QUẢN LÝ NHÂN SỰ & TÍNH LƯƠNG (HRM & PAYROLL SYSTEM)";
             this.Name = "MainForm";
-            this.Size = new Size(1360, 850);
+            this.Size = new Size(1180, 740);
+            this.MinimumSize = new Size(980, 600);
             this.StartPosition = FormStartPosition.CenterScreen;
-            this.Font = new Font("Segoe UI", 9.5f);
+            this.Font = new Font("Segoe UI", 9.5f, FontStyle.Regular);
             this.BackColor = Color.White;
             this.ForeColor = Color.Black;
+            this.AutoScaleMode = AutoScaleMode.Dpi;
 
             // StatusStrip (Dock = Bottom)
             statusStrip = new StatusStrip { Dock = DockStyle.Bottom, BackColor = Color.FromArgb(245, 247, 250), Name = "statusStrip" };
@@ -55,44 +57,47 @@ namespace HRMPayrollSystem.GUI
             };
             statusStrip.Items.AddRange(new ToolStripItem[] { lblSystemStatus, lblCurrentTime });
 
-            // Header (Nền trắng, chữ đen, viền)
+            // Header (Nền trắng, chữ đen, viền dưới)
             pnlHeader = new Panel
             {
                 Name = "pnlHeader",
                 Dock = DockStyle.Top,
-                Height = 65,
+                Height = 60,
                 BackColor = Color.White,
-                Padding = new Padding(20, 15, 20, 15),
+                Padding = new Padding(15, 12, 15, 12),
                 BorderStyle = BorderStyle.FixedSingle
             };
             lblHeaderTitle = new Label
             {
                 Name = "lblHeaderTitle",
-                Text = "HỆ THỐNG QUẢN LÝ NHÂN SỰ & TÍNH LƯƠNG (HRM & PAYROLL)",
+                Text = "HỆ THỐNG QUẢN LÝ NHÂN SỰ & TÍNH LƯƠNG",
                 ForeColor = Color.Black,
-                Font = new Font("Segoe UI", 14f, FontStyle.Bold),
+                Font = new Font("Segoe UI", 13f, FontStyle.Bold),
                 Dock = DockStyle.Left,
-                AutoSize = true
+                AutoSize = true,
+                UseMnemonic = false
             };
             Label lblSubInfo = new Label
             {
                 Name = "lblSubInfo",
                 Text = "Disconnected Model • SqlTransaction ACID • Parameterized Query",
                 ForeColor = Color.DimGray,
-                Font = new Font("Segoe UI", 9.5f, FontStyle.Regular),
+                Font = new Font("Segoe UI", 9f, FontStyle.Regular),
                 Dock = DockStyle.Right,
-                AutoSize = true
+                AutoSize = true,
+                UseMnemonic = false
             };
             pnlHeader.Controls.AddRange(new Control[] { lblHeaderTitle, lblSubInfo });
 
-            // Sidebar (Rộng 280px)
+            // Sidebar (Rộng 220px, có MinimumSize để không bao giờ bị bóp méo)
             pnlSidebar = new Panel
             {
                 Name = "pnlSidebar",
                 Dock = DockStyle.Left,
-                Width = 280,
+                Width = 220,
+                MinimumSize = new Size(220, 0),
                 BackColor = Color.White,
-                Padding = new Padding(10),
+                Padding = new Padding(8),
                 BorderStyle = BorderStyle.FixedSingle
             };
 
@@ -101,17 +106,19 @@ namespace HRMPayrollSystem.GUI
                 Name = "lblMenu",
                 Text = "DANH MỤC CHỨC NĂNG",
                 ForeColor = Color.Black,
-                Font = new Font("Segoe UI", 10f, FontStyle.Bold),
+                Font = new Font("Segoe UI", 9.5f, FontStyle.Bold),
                 Dock = DockStyle.Top,
-                Height = 40,
-                TextAlign = ContentAlignment.MiddleLeft
+                Height = 36,
+                TextAlign = ContentAlignment.MiddleLeft,
+                UseMnemonic = false
             };
 
-            btnNavNhanVien = CreateNavButton("btnNavNhanVien", "👥   Hồ Sơ Nhân Sự", () => OpenChildForm(new FormNhanVien(), "QUẢN LÝ HỒ SƠ NHÂN SỰ & ĐIỀU CHUYỂN PHÒNG BAN"));
-            btnNavPhongBan = CreateNavButton("btnNavPhongBan", "🏢   Phòng Ban", () => OpenChildForm(new FormPhongBan(), "QUẢN LÝ DANH MỤC PHÒNG BAN"));
-            btnNavChamCong = CreateNavButton("btnNavChamCong", "⏱️   Chấm Công (Disconnected)", () => OpenChildForm(new FormChamCong(), "CHẤM CÔNG THÁNG (Disconnected Model: DataSet / SqlDataAdapter)"));
-            btnNavTinhLuong = CreateNavButton("btnNavTinhLuong", "💰   Tính & Chốt Lương (ACID)", () => OpenChildForm(new FormTinhLuong(), "TÍNH LƯƠNG & CHỐT LƯƠNG THÁNG (SqlTransaction)"));
+            btnNavNhanVien = CreateNavButton("btnNavNhanVien", "👥  Hồ Sơ Nhân Sự", () => OpenChildForm(new FormNhanVien(), "QUẢN LÝ HỒ SƠ NHÂN SỰ & ĐIỀU CHUYỂN PHÒNG BAN"));
+            btnNavPhongBan = CreateNavButton("btnNavPhongBan", "🏢  Phòng Ban", () => OpenChildForm(new FormPhongBan(), "QUẢN LÝ DANH MỤC PHÒNG BAN"));
+            btnNavChamCong = CreateNavButton("btnNavChamCong", "⏱️  Chấm Công Tháng", () => OpenChildForm(new FormChamCong(), "CHẤM CÔNG THÁNG (Disconnected Model: DataSet / SqlDataAdapter)"));
+            btnNavTinhLuong = CreateNavButton("btnNavTinhLuong", "💰  Tính & Chốt Lương", () => OpenChildForm(new FormTinhLuong(), "TÍNH LƯƠNG & CHỐT LƯƠNG THÁNG (SqlTransaction ACID)"));
 
+            // Thêm từ dưới lên theo Dock Top
             pnlSidebar.Controls.Add(btnNavTinhLuong);
             pnlSidebar.Controls.Add(btnNavChamCong);
             pnlSidebar.Controls.Add(btnNavPhongBan);
@@ -140,15 +147,17 @@ namespace HRMPayrollSystem.GUI
                 Name = name,
                 Text = text,
                 Dock = DockStyle.Top,
-                Height = 52,
+                Height = 46,
                 FlatStyle = FlatStyle.Flat,
                 FlatAppearance = { BorderSize = 1, BorderColor = Color.LightGray },
                 ForeColor = Color.Black,
                 BackColor = Color.White,
-                Font = new Font("Segoe UI", 10.5f, FontStyle.Regular),
+                Font = new Font("Segoe UI", 9.5f, FontStyle.Regular),
                 TextAlign = ContentAlignment.MiddleLeft,
-                Padding = new Padding(15, 0, 0, 0),
-                Cursor = Cursors.Hand
+                Padding = new Padding(10, 0, 0, 0),
+                Cursor = Cursors.Hand,
+                UseMnemonic = false,
+                AutoEllipsis = true
             };
             btn.MouseEnter += (s, e) => { if (btn.BackColor != Color.FromArgb(230, 240, 255)) btn.BackColor = Color.FromArgb(245, 245, 245); };
             btn.MouseLeave += (s, e) => { if (btn.BackColor != Color.FromArgb(230, 240, 255)) btn.BackColor = Color.White; };
@@ -156,7 +165,7 @@ namespace HRMPayrollSystem.GUI
             {
                 ResetNavButtonsColor();
                 btn.BackColor = Color.FromArgb(230, 240, 255);
-                btn.Font = new Font("Segoe UI", 10.5f, FontStyle.Bold);
+                btn.Font = new Font("Segoe UI", 9.5f, FontStyle.Bold);
                 onClick();
             };
             return btn;
@@ -170,7 +179,7 @@ namespace HRMPayrollSystem.GUI
                 {
                     b.BackColor = Color.White;
                     b.ForeColor = Color.Black;
-                    b.Font = new Font("Segoe UI", 10.5f, FontStyle.Regular);
+                    b.Font = new Font("Segoe UI", 9.5f, FontStyle.Regular);
                 }
             }
         }
@@ -187,6 +196,7 @@ namespace HRMPayrollSystem.GUI
             childForm.TopLevel = false;
             childForm.FormBorderStyle = FormBorderStyle.None;
             childForm.Dock = DockStyle.Fill;
+            childForm.AutoScaleMode = AutoScaleMode.None; // Triệt tiêu lỗi double-scale khi nhúng Form vào Panel
             childForm.BackColor = Color.White;
             childForm.ForeColor = Color.Black;
 

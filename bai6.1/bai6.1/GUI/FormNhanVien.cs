@@ -47,11 +47,14 @@ namespace RetailSalesSystem.GUI
         {
             this.Text = "Quản lý Nhân viên bán hàng";
             this.Name = "FormNhanVien";
-            this.Size = new Size(950, 600);
+            this.Text = "Quản lý Danh mục Nhân viên";
+            this.Name = "FormNhanVien";
+            this.Size = new Size(1000, 640);
             this.StartPosition = FormStartPosition.CenterParent;
             this.Font = new Font("Segoe UI", 9.5f);
             this.BackColor = Color.White;
             this.ForeColor = Color.Black;
+            this.AutoScaleMode = AutoScaleMode.None;
 
             errorProvider = new ErrorProvider { ContainerControl = this };
 
@@ -62,70 +65,109 @@ namespace RetailSalesSystem.GUI
             statusStrip.Items.AddRange(new ToolStripItem[] { lblStatusCount, lblStatusRoles });
 
             // Top Header Panel
-            Panel pnlTop = new Panel { Dock = DockStyle.Top, Height = 60, Padding = new Padding(15), BackColor = Color.White, Name = "pnlTop" };
+            Panel pnlTop = new Panel { Dock = DockStyle.Top, Height = 48, Padding = new Padding(12, 10, 12, 6), BackColor = Color.White, Name = "pnlTop" };
             Label lblTitle = new Label
             {
                 Name = "lblTitle",
                 Text = "QUẢN LÝ DANH MỤC NHÂN VIÊN BÁN HÀNG",
-                Font = new Font("Segoe UI", 13f, FontStyle.Bold),
+                Font = new Font("Segoe UI", 12f, FontStyle.Bold),
                 ForeColor = Color.Black,
+                Dock = DockStyle.Top,
                 AutoSize = true,
-                Location = new Point(15, 12)
+                UseMnemonic = false
             };
             pnlTop.Controls.Add(lblTitle);
 
-            // Search Bar
-            Panel pnlSearch = new Panel { Dock = DockStyle.Top, Height = 48, Padding = new Padding(15, 5, 15, 5), BackColor = Color.White, Name = "pnlSearch" };
-            Label lblSearch = new Label { Name = "lblSearch", Text = "Tìm nhanh:", Location = new Point(15, 12), AutoSize = true, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), ForeColor = Color.Black };
-            txtTimKiem = new TextBox { Name = "txtTimKiem", Location = new Point(100, 9), Width = 300, PlaceholderText = "Nhập tên hoặc số điện thoại...", BackColor = Color.White, ForeColor = Color.Black };
+            // Search Bar (FlowLayoutPanel)
+            FlowLayoutPanel pnlSearch = new FlowLayoutPanel
+            {
+                Dock = DockStyle.Top,
+                AutoSize = true,
+                FlowDirection = FlowDirection.LeftToRight,
+                WrapContents = false,
+                Padding = new Padding(10, 6, 10, 6),
+                BackColor = Color.FromArgb(250, 251, 253),
+                Name = "pnlSearch"
+            };
+            Label lblSearch = new Label { Name = "lblSearch", Text = "Tìm nhanh:", AutoSize = true, Anchor = AnchorStyles.Left, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), Margin = new Padding(2, 6, 6, 6) };
+            txtTimKiem = new TextBox { Name = "txtTimKiem", Width = 320, PlaceholderText = "Nhập tên hoặc số điện thoại...", BackColor = Color.White, ForeColor = Color.Black, Margin = new Padding(3, 4, 8, 4) };
             txtTimKiem.TextChanged += (s, e) => TimKiemTucThoi();
 
-            btnXuatCSV = new Button { Name = "btnXuatCSV", Text = "Xuất CSV (Excel)", Location = new Point(415, 8), Width = 130, Height = 28, BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System };
+            btnXuatCSV = new Button { Name = "btnXuatCSV", Text = "📊 Xuất CSV (Excel)", Width = 140, Height = 30, BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System, Margin = new Padding(3, 3, 6, 3) };
             btnXuatCSV.Click += (s, e) => XuatCSV();
 
             pnlSearch.Controls.AddRange(new Control[] { lblSearch, txtTimKiem, btnXuatCSV });
 
-            // Bottom Input Form
+            // Bottom Input Form (TableLayoutPanel)
             GroupBox grpInput = new GroupBox
             {
                 Name = "grpInput",
                 Text = "Thông tin nhân viên",
                 Dock = DockStyle.Bottom,
-                Height = 165,
-                Padding = new Padding(10),
+                Height = 175,
+                Padding = new Padding(10, 8, 10, 8),
                 BackColor = Color.White,
                 ForeColor = Color.Black
             };
 
-            Label lblMa = new Label { Name = "lblMa", Text = "Mã NV:", Location = new Point(20, 30), AutoSize = true, ForeColor = Color.Black };
-            txtMaNV = new TextBox { Name = "txtMaNV", Location = new Point(80, 27), Width = 100, ReadOnly = true, PlaceholderText = "(Tự sinh)", BackColor = Color.White, ForeColor = Color.Black };
+            TableLayoutPanel tblInput = new TableLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                ColumnCount = 4,
+                RowCount = 3
+            };
+            tblInput.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+            tblInput.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 45F));
+            tblInput.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
+            tblInput.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 55F));
 
-            Label lblTen = new Label { Name = "lblTen", Text = "Tên NV:", Location = new Point(200, 30), AutoSize = true, ForeColor = Color.Black };
-            txtTenNV = new TextBox { Name = "txtTenNV", Location = new Point(270, 27), Width = 230, BackColor = Color.White, ForeColor = Color.Black };
+            Label lblMa = new Label { Name = "lblMa", Text = "Mã NV:", Anchor = AnchorStyles.Left, AutoSize = true, Margin = new Padding(3, 6, 6, 6) };
+            txtMaNV = new TextBox { Name = "txtMaNV", Dock = DockStyle.Fill, ReadOnly = true, PlaceholderText = "(Tự sinh)", BackColor = Color.White, ForeColor = Color.Black, Margin = new Padding(3, 3, 15, 3) };
 
-            Label lblPhone = new Label { Name = "lblPhone", Text = "Số ĐT:", Location = new Point(520, 30), AutoSize = true, ForeColor = Color.Black };
-            txtSoDienThoai = new TextBox { Name = "txtSoDienThoai", Location = new Point(580, 27), Width = 190, BackColor = Color.White, ForeColor = Color.Black };
+            Label lblTen = new Label { Name = "lblTen", Text = "Tên NV:", Anchor = AnchorStyles.Left, AutoSize = true, Margin = new Padding(3, 6, 6, 6) };
+            txtTenNV = new TextBox { Name = "txtTenNV", Dock = DockStyle.Fill, BackColor = Color.White, ForeColor = Color.Black, Margin = new Padding(3, 3, 3, 3) };
 
-            Label lblChucVu = new Label { Name = "lblChucVu", Text = "Chức vụ:", Location = new Point(20, 70), AutoSize = true, ForeColor = Color.Black };
-            cboChucVu = new ComboBox { Name = "cboChucVu", Location = new Point(80, 67), Width = 180, DropDownStyle = ComboBoxStyle.DropDownList, BackColor = Color.White, ForeColor = Color.Black };
+            Label lblPhone = new Label { Name = "lblPhone", Text = "Số ĐT:", Anchor = AnchorStyles.Left, AutoSize = true, Margin = new Padding(3, 6, 6, 6) };
+            txtSoDienThoai = new TextBox { Name = "txtSoDienThoai", Dock = DockStyle.Fill, BackColor = Color.White, ForeColor = Color.Black, Margin = new Padding(3, 3, 15, 3) };
+
+            Label lblChucVu = new Label { Name = "lblChucVu", Text = "Chức vụ:", Anchor = AnchorStyles.Left, AutoSize = true, Margin = new Padding(3, 6, 6, 6) };
+            cboChucVu = new ComboBox { Name = "cboChucVu", Dock = DockStyle.Fill, DropDownStyle = ComboBoxStyle.DropDownList, BackColor = Color.White, ForeColor = Color.Black, Margin = new Padding(3, 3, 3, 3) };
             cboChucVu.Items.AddRange(new object[] { "Thu ngân", "Quản lý", "Nhân viên bán hàng", "Kiểm kho" });
             cboChucVu.SelectedIndex = 0;
 
-            btnThem = new Button { Name = "btnThem", Text = "Thêm mới", Location = new Point(20, 110), Width = 100, Height = 34, BackColor = Color.White, ForeColor = Color.Black, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), FlatStyle = FlatStyle.System };
-            btnSua = new Button { Name = "btnSua", Text = "Cập nhật", Location = new Point(130, 110), Width = 100, Height = 34, BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System };
-            btnXoa = new Button { Name = "btnXoa", Text = "Xóa", Location = new Point(240, 110), Width = 100, Height = 34, BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System };
-            btnLamMoi = new Button { Name = "btnLamMoi", Text = "Làm mới", Location = new Point(350, 110), Width = 100, Height = 34, BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System };
+            FlowLayoutPanel pnlButtons = new FlowLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                FlowDirection = FlowDirection.LeftToRight,
+                AutoSize = true,
+                Margin = new Padding(0, 6, 0, 0)
+            };
+            tblInput.SetColumnSpan(pnlButtons, 4);
+
+            btnThem = new Button { Name = "btnThem", Text = "➕ Thêm mới", Width = 110, Height = 34, BackColor = Color.White, ForeColor = Color.Black, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), FlatStyle = FlatStyle.System, Margin = new Padding(0, 0, 8, 0) };
+            btnSua = new Button { Name = "btnSua", Text = "✏️ Cập nhật", Width = 110, Height = 34, BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System, Margin = new Padding(0, 0, 8, 0) };
+            btnXoa = new Button { Name = "btnXoa", Text = "🗑️ Xóa", Width = 100, Height = 34, BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System, Margin = new Padding(0, 0, 8, 0) };
+            btnLamMoi = new Button { Name = "btnLamMoi", Text = "🔄 Làm mới", Width = 110, Height = 34, BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System, Margin = new Padding(0, 0, 8, 0) };
 
             btnThem.Click += (s, e) => Them();
             btnSua.Click += (s, e) => Sua();
             btnXoa.Click += (s, e) => Xoa();
             btnLamMoi.Click += (s, e) => ClearForm();
 
-            grpInput.Controls.AddRange(new Control[] {
-                lblMa, txtMaNV, lblTen, txtTenNV,
-                lblPhone, txtSoDienThoai, lblChucVu, cboChucVu,
-                btnThem, btnSua, btnXoa, btnLamMoi
-            });
+            pnlButtons.Controls.AddRange(new Control[] { btnThem, btnSua, btnXoa, btnLamMoi });
+
+            tblInput.Controls.Add(lblMa, 0, 0);
+            tblInput.Controls.Add(txtMaNV, 1, 0);
+            tblInput.Controls.Add(lblTen, 2, 0);
+            tblInput.Controls.Add(txtTenNV, 3, 0);
+
+            tblInput.Controls.Add(lblPhone, 0, 1);
+            tblInput.Controls.Add(txtSoDienThoai, 1, 1);
+            tblInput.Controls.Add(lblChucVu, 2, 1);
+            tblInput.Controls.Add(cboChucVu, 3, 1);
+
+            tblInput.Controls.Add(pnlButtons, 0, 2);
+            grpInput.Controls.Add(tblInput);
 
             // Grid Container
             Panel pnlGrid = new Panel { Dock = DockStyle.Fill, BackColor = Color.White, Name = "pnlGrid" };

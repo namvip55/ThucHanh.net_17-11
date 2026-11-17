@@ -47,62 +47,106 @@ namespace RetailSalesSystem.GUI
         {
             InitializeComponent();
             LoadMasterData();
+            CapNhatGioHang();
         }
 
         private void InitializeComponent()
         {
             this.Text = "Hệ thống Bán hàng & Thu ngân (POS - SqlTransaction)";
             this.Name = "FormBanHang";
-            this.Size = new Size(1100, 720);
+            this.Size = new Size(1100, 700);
             this.StartPosition = FormStartPosition.CenterParent;
-            this.Font = new Font("Segoe UI", 9.5f);
+            this.Font = new Font("Segoe UI", 9.5f, FontStyle.Regular);
             this.BackColor = Color.White;
             this.ForeColor = Color.Black;
+            this.AutoScaleMode = AutoScaleMode.None;
 
             tabControl = new TabControl { Name = "tabControl", Dock = DockStyle.Fill, BackColor = Color.White };
-            TabPage tabBanHang = new TabPage { Name = "tabBanHang", Text = "  Lập Hóa Đơn & Thanh Toán (ACID)  ", BackColor = Color.White, ForeColor = Color.Black };
+            TabPage tabBanHang = new TabPage { Name = "tabBanHang", Text = "  Lập Hóa Đơn & Bán Hàng (SqlTransaction ACID)  ", BackColor = Color.White, ForeColor = Color.Black };
             TabPage tabLichSu = new TabPage { Name = "tabLichSu", Text = "  Lịch Sử Hóa Đơn Đã Lập  ", BackColor = Color.White, ForeColor = Color.Black };
 
-            #region TAB 1: BAN HANG
-            Panel pnlTopInfo = new Panel { Name = "pnlTopInfo", Dock = DockStyle.Top, Height = 145, Padding = new Padding(15, 10, 15, 10), BackColor = Color.White, ForeColor = Color.Black };
-            
-            // Row 1: Nhan vien & Khach hang
-            Label lblNV = new Label { Name = "lblNV", Text = "Nhân viên:", Location = new Point(15, 15), AutoSize = true, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), ForeColor = Color.Black };
-            cboNhanVien = new ComboBox { Name = "cboNhanVien", Location = new Point(105, 12), Width = 210, DropDownStyle = ComboBoxStyle.DropDownList, BackColor = Color.White, ForeColor = Color.Black };
+            #region TAB 1: BAN HANG (Responsive TableLayoutPanel)
+            TableLayoutPanel tblTop = new TableLayoutPanel
+            {
+                Name = "tblTop",
+                Dock = DockStyle.Top,
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                Padding = new Padding(12, 8, 12, 8),
+                BackColor = Color.FromArgb(250, 251, 253),
+                ColumnCount = 6,
+                RowCount = 3
+            };
+            tblTop.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));            // Col 0: Label
+            tblTop.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 30F));        // Col 1: Input
+            tblTop.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));            // Col 2: Label
+            tblTop.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 35F));        // Col 3: Input
+            tblTop.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));            // Col 4: Info label
+            tblTop.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 35F));        // Col 5: Info label
+            tblTop.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            tblTop.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            tblTop.RowStyles.Add(new RowStyle(SizeType.AutoSize));
 
-            Label lblKH = new Label { Name = "lblKH", Text = "Khách hàng:", Location = new Point(335, 15), AutoSize = true, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), ForeColor = Color.Black };
-            cboKhachHang = new ComboBox { Name = "cboKhachHang", Location = new Point(435, 12), Width = 280, DropDownStyle = ComboBoxStyle.DropDownList, BackColor = Color.White, ForeColor = Color.Black };
+            // Row 0: Nhan vien & Khach hang
+            Label lblNV = new Label { Name = "lblNV", Text = "Nhân viên:", Anchor = AnchorStyles.Left, AutoSize = true, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), Margin = new Padding(3, 6, 8, 6) };
+            cboNhanVien = new ComboBox { Name = "cboNhanVien", Dock = DockStyle.Fill, DropDownStyle = ComboBoxStyle.DropDownList, BackColor = Color.White, ForeColor = Color.Black };
+
+            Label lblKH = new Label { Name = "lblKH", Text = "Khách hàng:", Anchor = AnchorStyles.Left, AutoSize = true, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), Margin = new Padding(12, 6, 8, 6) };
+            cboKhachHang = new ComboBox { Name = "cboKhachHang", Dock = DockStyle.Fill, DropDownStyle = ComboBoxStyle.DropDownList, BackColor = Color.White, ForeColor = Color.Black };
             cboKhachHang.SelectedIndexChanged += CboKhachHang_SelectedIndexChanged;
 
-            lblDiemHienCo = new Label { Name = "lblDiemHienCo", Text = "Điểm tích lũy: 0", Location = new Point(730, 15), AutoSize = true, ForeColor = Color.Black, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold) };
+            lblDiemHienCo = new Label { Name = "lblDiemHienCo", Text = "Điểm tích lũy: 0", Anchor = AnchorStyles.Left, AutoSize = true, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), ForeColor = Color.Black, Margin = new Padding(12, 6, 3, 6) };
+            tblTop.SetColumnSpan(lblDiemHienCo, 2);
 
-            // Row 2: San pham
-            Label lblSP = new Label { Name = "lblSP", Text = "Chọn Sản phẩm:", Location = new Point(15, 55), AutoSize = true, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), ForeColor = Color.Black };
-            cboSanPham = new ComboBox { Name = "cboSanPham", Location = new Point(135, 52), Width = 450, DropDownStyle = ComboBoxStyle.DropDownList, BackColor = Color.White, ForeColor = Color.Black };
+            tblTop.Controls.Add(lblNV, 0, 0);
+            tblTop.Controls.Add(cboNhanVien, 1, 0);
+            tblTop.Controls.Add(lblKH, 2, 0);
+            tblTop.Controls.Add(cboKhachHang, 3, 0);
+            tblTop.Controls.Add(lblDiemHienCo, 4, 0);
+
+            // Row 1: San pham
+            Label lblSP = new Label { Name = "lblSP", Text = "Sản phẩm:", Anchor = AnchorStyles.Left, AutoSize = true, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), Margin = new Padding(3, 6, 8, 6) };
+            cboSanPham = new ComboBox { Name = "cboSanPham", Dock = DockStyle.Fill, DropDownStyle = ComboBoxStyle.DropDownList, BackColor = Color.White, ForeColor = Color.Black };
+            tblTop.SetColumnSpan(cboSanPham, 3);
             cboSanPham.SelectedIndexChanged += CboSanPham_SelectedIndexChanged;
 
-            lblTonKho = new Label { Name = "lblTonKho", Text = "Tồn kho: 0", Location = new Point(600, 55), AutoSize = true, ForeColor = Color.Black, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold) };
-            lblDonGia = new Label { Name = "lblDonGia", Text = "Đơn giá: 0 đ", Location = new Point(730, 55), AutoSize = true, ForeColor = Color.Black, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold) };
+            lblTonKho = new Label { Name = "lblTonKho", Text = "Tồn kho: 0", Anchor = AnchorStyles.Left, AutoSize = true, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), ForeColor = Color.Black, Margin = new Padding(12, 6, 8, 6) };
+            lblDonGia = new Label { Name = "lblDonGia", Text = "Đơn giá: 0 đ", Anchor = AnchorStyles.Left, AutoSize = true, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), ForeColor = Color.Black, Margin = new Padding(12, 6, 3, 6) };
 
-            // Row 3: So luong & Buttons
-            Label lblSL = new Label { Name = "lblSL", Text = "Số lượng:", Location = new Point(15, 95), AutoSize = true, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), ForeColor = Color.Black };
-            numSoLuong = new NumericUpDown { Name = "numSoLuong", Location = new Point(95, 92), Width = 80, Minimum = 1, Maximum = 9999, Value = 1, BackColor = Color.White, ForeColor = Color.Black };
+            tblTop.Controls.Add(lblSP, 0, 1);
+            tblTop.Controls.Add(cboSanPham, 1, 1);
+            tblTop.Controls.Add(lblTonKho, 4, 1);
+            tblTop.Controls.Add(lblDonGia, 5, 1);
 
-            btnThemVaoGio = new Button { Name = "btnThemVaoGio", Text = "Thêm vào giỏ", Location = new Point(190, 88), Width = 130, Height = 32, BackColor = Color.White, ForeColor = Color.Black, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), FlatStyle = FlatStyle.System };
-            btnXoaKhoiGio = new Button { Name = "btnXoaKhoiGio", Text = "Xóa chọn", Location = new Point(330, 88), Width = 100, Height = 32, BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System };
-            btnXoaHet = new Button { Name = "btnXoaHet", Text = "Xóa hết giỏ", Location = new Point(440, 88), Width = 100, Height = 32, BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System };
+            // Row 2: So luong & Buttons
+            Label lblSL = new Label { Name = "lblSL", Text = "Số lượng:", Anchor = AnchorStyles.Left, AutoSize = true, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), Margin = new Padding(3, 6, 8, 6) };
+            numSoLuong = new NumericUpDown { Name = "numSoLuong", Dock = DockStyle.Fill, Minimum = 1, Maximum = 9999, Value = 1, BackColor = Color.White, ForeColor = Color.Black };
+
+            FlowLayoutPanel pnlItemButtons = new FlowLayoutPanel
+            {
+                Name = "pnlItemButtons",
+                Dock = DockStyle.Fill,
+                FlowDirection = FlowDirection.LeftToRight,
+                AutoSize = true,
+                Margin = new Padding(10, 2, 2, 2)
+            };
+            tblTop.SetColumnSpan(pnlItemButtons, 4);
+
+            btnThemVaoGio = new Button { Name = "btnThemVaoGio", Text = "➕ Thêm vào giỏ", Width = 140, Height = 32, BackColor = Color.White, ForeColor = Color.Black, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), FlatStyle = FlatStyle.System, Margin = new Padding(0, 0, 8, 0) };
+            btnXoaKhoiGio = new Button { Name = "btnXoaKhoiGio", Text = "🗑️ Xóa chọn", Width = 110, Height = 32, BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System, Margin = new Padding(0, 0, 8, 0) };
+            btnXoaHet = new Button { Name = "btnXoaHet", Text = "🧹 Xóa hết giỏ", Width = 110, Height = 32, BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System, Margin = new Padding(0, 0, 8, 0) };
 
             btnThemVaoGio.Click += (s, e) => ThemVaoGio();
             btnXoaKhoiGio.Click += (s, e) => XoaKhoiGio();
             btnXoaHet.Click += (s, e) => XoaHetGio();
 
-            pnlTopInfo.Controls.AddRange(new Control[] {
-                lblNV, cboNhanVien, lblKH, cboKhachHang, lblDiemHienCo,
-                lblSP, cboSanPham, lblTonKho, lblDonGia,
-                lblSL, numSoLuong, btnThemVaoGio, btnXoaKhoiGio, btnXoaHet
-            });
+            pnlItemButtons.Controls.AddRange(new Control[] { btnThemVaoGio, btnXoaKhoiGio, btnXoaHet });
 
-            // Grid Gio hang (Nền trắng chữ đen)
+            tblTop.Controls.Add(lblSL, 0, 2);
+            tblTop.Controls.Add(numSoLuong, 1, 2);
+            tblTop.Controls.Add(pnlItemButtons, 2, 2);
+
+            // Grid Gio hang (Nền trắng chữ đen, cột rõ ràng)
             dgvGioHang = new DataGridView
             {
                 Name = "dgvGioHang",
@@ -115,7 +159,8 @@ namespace RetailSalesSystem.GUI
                 RowHeadersVisible = false,
                 BackgroundColor = Color.White,
                 ForeColor = Color.Black,
-                GridColor = Color.LightGray
+                GridColor = Color.LightGray,
+                AutoGenerateColumns = false
             };
             dgvGioHang.DefaultCellStyle.BackColor = Color.White;
             dgvGioHang.DefaultCellStyle.ForeColor = Color.Black;
@@ -126,61 +171,100 @@ namespace RetailSalesSystem.GUI
             dgvGioHang.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
             dgvGioHang.EnableHeadersVisualStyles = false;
 
-            // Bottom checkout bar (Nền trắng chữ đen, nút bấm rộng rãi)
-            Panel pnlBottomCheckout = new Panel { Name = "pnlBottomCheckout", Dock = DockStyle.Bottom, Height = 100, Padding = new Padding(15), BackColor = Color.White, ForeColor = Color.Black, BorderStyle = BorderStyle.FixedSingle };
+            // Khởi tạo cột sẵn cho Giỏ Hàng
+            dgvGioHang.Columns.Add(new DataGridViewTextBoxColumn { Name = "colMaSP", DataPropertyName = "MaSP", HeaderText = "Mã Sản Phẩm", FillWeight = 15 });
+            dgvGioHang.Columns.Add(new DataGridViewTextBoxColumn { Name = "colTenSP", DataPropertyName = "TenSP", HeaderText = "Tên Sản Phẩm", FillWeight = 38 });
+            dgvGioHang.Columns.Add(new DataGridViewTextBoxColumn { Name = "colDonGia", DataPropertyName = "DonGia", HeaderText = "Đơn Giá (VNĐ)", FillWeight = 16, DefaultCellStyle = { Format = "N0", Alignment = DataGridViewContentAlignment.MiddleRight } });
+            dgvGioHang.Columns.Add(new DataGridViewTextBoxColumn { Name = "colSoLuong", DataPropertyName = "SoLuong", HeaderText = "Số Lượng", FillWeight = 12, DefaultCellStyle = { Alignment = DataGridViewContentAlignment.MiddleCenter } });
+            dgvGioHang.Columns.Add(new DataGridViewTextBoxColumn { Name = "colThanhTien", DataPropertyName = "ThanhTien", HeaderText = "Thành Tiền (VNĐ)", FillWeight = 19, DefaultCellStyle = { Format = "N0", Alignment = DataGridViewContentAlignment.MiddleRight } });
+
+            // Bottom checkout bar (Responsive TableLayoutPanel)
+            TableLayoutPanel tblBottom = new TableLayoutPanel
+            {
+                Name = "tblBottom",
+                Dock = DockStyle.Bottom,
+                Height = 75,
+                Padding = new Padding(12, 8, 12, 8),
+                BackColor = Color.FromArgb(250, 251, 253),
+                BorderStyle = BorderStyle.FixedSingle,
+                ColumnCount = 2,
+                RowCount = 1
+            };
+            tblBottom.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tblBottom.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tblBottom.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+
+            FlowLayoutPanel pnlLeftTotal = new FlowLayoutPanel
+            {
+                Dock = DockStyle.Fill,
+                FlowDirection = FlowDirection.TopDown,
+                WrapContents = false,
+                AutoSize = true
+            };
             lblTongTien = new Label
             {
                 Name = "lblTongTien",
                 Text = "TỔNG TIỀN: 0 VNĐ",
-                Location = new Point(20, 20),
                 AutoSize = true,
-                Font = new Font("Segoe UI", 16f, FontStyle.Bold),
-                ForeColor = Color.Black
+                Font = new Font("Segoe UI", 14f, FontStyle.Bold),
+                ForeColor = Color.Black,
+                Margin = new Padding(0, 0, 0, 2)
             };
             lblDiemCong = new Label
             {
                 Name = "lblDiemCong",
-                Text = "Điểm tích lũy cộng thêm (+TongTien / 100,000): +0 điểm",
-                Location = new Point(23, 60),
+                Text = "Khách hàng sẽ được cộng thêm: +0 điểm tích lũy",
                 AutoSize = true,
-                Font = new Font("Segoe UI", 10f, FontStyle.Regular),
+                Font = new Font("Segoe UI", 9f, FontStyle.Regular),
                 ForeColor = Color.Black
             };
+            pnlLeftTotal.Controls.AddRange(new Control[] { lblTongTien, lblDiemCong });
 
-            btnThanhToan = new Button
+            FlowLayoutPanel pnlRightActions = new FlowLayoutPanel
             {
-                Name = "btnThanhToan",
-                Text = "THANH TOÁN (SqlTransaction)",
-                Location = new Point(560, 15),
-                Width = 260,
-                Height = 65,
-                BackColor = Color.White,
-                ForeColor = Color.Black,
-                Font = new Font("Segoe UI", 11f, FontStyle.Bold),
-                Cursor = Cursors.Hand,
-                FlatStyle = FlatStyle.System
+                Dock = DockStyle.Fill,
+                FlowDirection = FlowDirection.RightToLeft,
+                WrapContents = false,
+                AutoSize = true
             };
-            btnThanhToan.Click += (s, e) => ThanhToan();
 
             btnTestRollback = new Button
             {
                 Name = "btnTestRollback",
-                Text = "Mô phỏng Mua Quá Tồn Kho\n(Kiểm chứng Rollback)",
-                Location = new Point(835, 15),
-                Width = 230,
-                Height = 65,
+                Text = "Thử Mua Quá Tồn\n(Rollback)",
+                Width = 160,
+                Height = 50,
                 BackColor = Color.White,
                 ForeColor = Color.Black,
-                Font = new Font("Segoe UI", 9.5f, FontStyle.Bold),
-                FlatStyle = FlatStyle.System
+                Font = new Font("Segoe UI", 8.5f, FontStyle.Bold),
+                FlatStyle = FlatStyle.System,
+                Margin = new Padding(8, 0, 0, 0)
             };
             btnTestRollback.Click += (s, e) => MoPhongRollback();
 
-            pnlBottomCheckout.Controls.AddRange(new Control[] { lblTongTien, lblDiemCong, btnThanhToan, btnTestRollback });
+            btnThanhToan = new Button
+            {
+                Name = "btnThanhToan",
+                Text = "💳 THANH TOÁN\n(SqlTransaction)",
+                Width = 210,
+                Height = 50,
+                BackColor = Color.White,
+                ForeColor = Color.Black,
+                Font = new Font("Segoe UI", 10f, FontStyle.Bold),
+                Cursor = Cursors.Hand,
+                FlatStyle = FlatStyle.System,
+                Margin = new Padding(8, 0, 0, 0)
+            };
+            btnThanhToan.Click += (s, e) => ThanhToan();
+
+            pnlRightActions.Controls.AddRange(new Control[] { btnTestRollback, btnThanhToan });
+
+            tblBottom.Controls.Add(pnlLeftTotal, 0, 0);
+            tblBottom.Controls.Add(pnlRightActions, 1, 0);
 
             tabBanHang.Controls.Add(dgvGioHang);
-            tabBanHang.Controls.Add(pnlBottomCheckout);
-            tabBanHang.Controls.Add(pnlTopInfo);
+            tabBanHang.Controls.Add(tblBottom);
+            tabBanHang.Controls.Add(tblTop);
             #endregion
 
             #region TAB 2: LICH SU HOA DON
@@ -287,7 +371,7 @@ namespace RetailSalesSystem.GUI
             {
                 if (kh.MaKH > 0)
                 {
-                    lblDiemHienCo.Text = $"Điểm tích lũy: {kh.DiemTichLuy} (SĐT: {kh.DienThoai})";
+                    lblDiemHienCo.Text = $"Điểm: {kh.DiemTichLuy} (SĐT: {kh.DienThoai})";
                 }
                 else
                 {
@@ -361,28 +445,13 @@ namespace RetailSalesSystem.GUI
             dgvGioHang.DataSource = null;
             dgvGioHang.DataSource = _cart.ToList();
 
-            if (dgvGioHang.Columns["MaSP"] != null) dgvGioHang.Columns["MaSP"].HeaderText = "Mã Sản Phẩm";
-            if (dgvGioHang.Columns["TenSP"] != null) dgvGioHang.Columns["TenSP"].HeaderText = "Tên Sản Phẩm";
-            if (dgvGioHang.Columns["DonGia"] != null)
-            {
-                dgvGioHang.Columns["DonGia"].HeaderText = "Đơn Giá";
-                dgvGioHang.Columns["DonGia"].DefaultCellStyle.Format = "N0";
-            }
-            if (dgvGioHang.Columns["SoLuong"] != null) dgvGioHang.Columns["SoLuong"].HeaderText = "Số Lượng";
-            if (dgvGioHang.Columns["ThanhTien"] != null)
-            {
-                dgvGioHang.Columns["ThanhTien"].HeaderText = "Thành Tiền";
-                dgvGioHang.Columns["ThanhTien"].DefaultCellStyle.Format = "N0";
-            }
-            if (dgvGioHang.Columns["SoLuongTon"] != null) dgvGioHang.Columns["SoLuongTon"].Visible = false;
-
             decimal tong = _cart.Sum(c => c.ThanhTien);
             lblTongTien.Text = $"TỔNG TIỀN: {tong:N0} VNĐ";
 
             int diemCong = (int)(tong / 100000m);
             if (cboKhachHang.SelectedItem is KhachHangDTO kh && kh.MaKH > 0)
             {
-                lblDiemCong.Text = $"Khách hàng '{kh.TenKH}' sẽ được cộng thêm: +{diemCong} điểm tích lũy";
+                lblDiemCong.Text = $"Khách hàng '{kh.TenKH}' sẽ được cộng: +{diemCong} điểm tích lũy";
             }
             else
             {

@@ -48,71 +48,84 @@ namespace HRMPayrollSystem.GUI
             this.Font = new Font("Segoe UI", 9.5f);
             this.BackColor = Color.White;
             this.ForeColor = Color.Black;
+            this.AutoScaleMode = AutoScaleMode.None;
 
             // StatusStrip (Dock = Bottom)
             statusStrip = new StatusStrip { Dock = DockStyle.Bottom, BackColor = Color.FromArgb(245, 247, 250), Name = "statusStrip" };
             lblStatusInfo = new ToolStripStatusLabel { Text = "Mô hình ngắt kết nối (Disconnected Model): Nạp DataTable qua SqlDataAdapter • Đồng bộ tức thì bằng SqlCommandBuilder", Name = "lblStatusInfo", Font = new Font("Segoe UI", 9f, FontStyle.Italic) };
             statusStrip.Items.Add(lblStatusInfo);
 
-            Panel pnlTop = new Panel { Name = "pnlTop", Dock = DockStyle.Top, Height = 100, Padding = new Padding(15), BackColor = Color.White };
+            Panel pnlTop = new Panel { Name = "pnlTop", Dock = DockStyle.Top, AutoSize = true, Padding = new Padding(12, 8, 12, 8), BackColor = Color.White };
             
             Label lblTitle = new Label
             {
                 Name = "lblTitle",
                 Text = "BẢNG CHẤM CÔNG HÀNG THÁNG (DISCONNECTED MODEL)",
-                Font = new Font("Segoe UI", 13f, FontStyle.Bold),
+                Font = new Font("Segoe UI", 12f, FontStyle.Bold),
                 ForeColor = Color.Black,
+                Dock = DockStyle.Top,
                 AutoSize = true,
-                Location = new Point(15, 10)
+                UseMnemonic = false,
+                Margin = new Padding(0, 0, 0, 8)
             };
 
-            Label lblThang = new Label { Name = "lblThang", Text = "Chọn Tháng:", Location = new Point(18, 55), AutoSize = true, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), ForeColor = Color.Black };
-            cboThang = new ComboBox { Name = "cboThang", Location = new Point(105, 52), Width = 70, DropDownStyle = ComboBoxStyle.DropDownList, BackColor = Color.White, ForeColor = Color.Black };
+            FlowLayoutPanel pnlFilterActions = new FlowLayoutPanel
+            {
+                Dock = DockStyle.Top,
+                AutoSize = true,
+                FlowDirection = FlowDirection.LeftToRight,
+                WrapContents = true,
+                Padding = new Padding(0, 6, 0, 4),
+                BackColor = Color.White
+            };
+
+            Label lblThang = new Label { Name = "lblThang", Text = "Chọn Tháng:", Anchor = AnchorStyles.Left, AutoSize = true, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), ForeColor = Color.Black, Margin = new Padding(2, 6, 4, 6) };
+            cboThang = new ComboBox { Name = "cboThang", Width = 65, DropDownStyle = ComboBoxStyle.DropDownList, BackColor = Color.White, ForeColor = Color.Black, Margin = new Padding(2, 4, 10, 4) };
             for (int i = 1; i <= 12; i++) cboThang.Items.Add(i.ToString("D2"));
             cboThang.SelectedItem = DateTime.Today.Month.ToString("D2");
 
-            Label lblNam = new Label { Name = "lblNam", Text = "Năm:", Location = new Point(190, 55), AutoSize = true, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), ForeColor = Color.Black };
-            numNam = new NumericUpDown { Name = "numNam", Location = new Point(235, 52), Width = 80, Minimum = 2020, Maximum = 2050, Value = DateTime.Today.Year, BackColor = Color.White, ForeColor = Color.Black };
+            Label lblNam = new Label { Name = "lblNam", Text = "Năm:", Anchor = AnchorStyles.Left, AutoSize = true, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), ForeColor = Color.Black, Margin = new Padding(2, 6, 4, 6) };
+            numNam = new NumericUpDown { Name = "numNam", Width = 75, Minimum = 2020, Maximum = 2050, Value = DateTime.Today.Year, BackColor = Color.White, ForeColor = Color.Black, Margin = new Padding(2, 4, 12, 4) };
 
             btnNapDuLieu = new Button
             {
                 Name = "btnNapDuLieu",
-                Text = "Nạp Bảng Chấm Công",
-                Location = new Point(330, 48),
-                Width = 160,
+                Text = "📥 Nạp Bảng Chấm Công",
+                Width = 175,
                 Height = 32,
                 BackColor = Color.White,
                 ForeColor = Color.Black,
                 Font = new Font("Segoe UI", 9f, FontStyle.Bold),
-                FlatStyle = FlatStyle.System
+                FlatStyle = FlatStyle.System,
+                Margin = new Padding(2, 3, 8, 3)
             };
             btnNapDuLieu.Click += (s, e) => NapDuLieu();
 
             btnLuuChamCong = new Button
             {
                 Name = "btnLuuChamCong",
-                Text = "LƯU CHẤM CÔNG (SqlCommandBuilder)",
-                Location = new Point(500, 48),
-                Width = 260,
+                Text = "💾 LƯU CHẤM CÔNG (SqlCommandBuilder)",
+                Width = 275,
                 Height = 32,
                 BackColor = Color.White,
                 ForeColor = Color.Black,
                 Font = new Font("Segoe UI", 9.5f, FontStyle.Bold),
                 Cursor = Cursors.Hand,
-                FlatStyle = FlatStyle.System
+                FlatStyle = FlatStyle.System,
+                Margin = new Padding(2, 3, 8, 3)
             };
             btnLuuChamCong.Click += (s, e) => LuuChamCong();
 
             btnXuatCSV = new Button
             {
                 Name = "btnXuatCSV",
-                Text = "Xuất CSV",
-                Location = new Point(770, 48),
-                Width = 100,
+                Text = "📊 Xuất CSV",
+                Width = 110,
                 Height = 32,
                 BackColor = Color.White,
                 ForeColor = Color.Black,
-                FlatStyle = FlatStyle.System
+                FlatStyle = FlatStyle.System,
+                Margin = new Padding(2, 3, 8, 3)
             };
             btnXuatCSV.Click += (s, e) => XuatCSV();
 
@@ -120,16 +133,20 @@ namespace HRMPayrollSystem.GUI
             {
                 Name = "lblTrangThai",
                 Text = "",
-                Location = new Point(880, 55),
+                Anchor = AnchorStyles.Left,
                 AutoSize = true,
                 Font = new Font("Segoe UI", 9.5f, FontStyle.Bold),
-                ForeColor = Color.Black
+                ForeColor = Color.Black,
+                Margin = new Padding(6, 6, 2, 6)
             };
 
-            pnlTop.Controls.AddRange(new Control[] {
-                lblTitle, lblThang, cboThang, lblNam, numNam,
+            pnlFilterActions.Controls.AddRange(new Control[] {
+                lblThang, cboThang, lblNam, numNam,
                 btnNapDuLieu, btnLuuChamCong, btnXuatCSV, lblTrangThai
             });
+
+            pnlTop.Controls.Add(pnlFilterActions);
+            pnlTop.Controls.Add(lblTitle);
 
             // Grid (Nền trắng, chữ đen)
             dgvChamCong = new DataGridView

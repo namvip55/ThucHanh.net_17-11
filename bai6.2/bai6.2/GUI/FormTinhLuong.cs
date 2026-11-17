@@ -40,69 +40,83 @@ namespace HRMPayrollSystem.GUI
         {
             this.Text = "Tính lương & Chốt lương tháng (SqlTransaction)";
             this.Name = "FormTinhLuong";
-            this.Size = new Size(1100, 680);
+            this.Size = new Size(1050, 640);
             this.StartPosition = FormStartPosition.CenterParent;
             this.Font = new Font("Segoe UI", 9.5f);
             this.BackColor = Color.White;
             this.ForeColor = Color.Black;
+            this.AutoScaleMode = AutoScaleMode.None;
 
             // StatusStrip (Dock = Bottom)
             statusStrip = new StatusStrip { Dock = DockStyle.Bottom, BackColor = Color.FromArgb(245, 247, 250), Name = "statusStrip" };
             lblStatusInfo = new ToolStripStatusLabel { Text = "Áp dụng công thức lương chuẩn • Thực thi giao dịch SqlTransaction khóa dữ liệu chấm công khi chốt lương", Name = "lblStatusInfo", Font = new Font("Segoe UI", 9f, FontStyle.Italic) };
             statusStrip.Items.Add(lblStatusInfo);
 
-            Panel pnlTop = new Panel { Name = "pnlTop", Dock = DockStyle.Top, Height = 140, Padding = new Padding(15), BackColor = Color.White };
+            Panel pnlTop = new Panel { Name = "pnlTop", Dock = DockStyle.Top, AutoSize = true, Padding = new Padding(12, 8, 12, 8), BackColor = Color.White };
 
             Label lblTitle = new Label
             {
                 Name = "lblTitle",
                 Text = "TÍNH LƯƠNG & CHỐT LƯƠNG THÁNG (SqlTransaction ACID)",
-                Font = new Font("Segoe UI", 13f, FontStyle.Bold),
+                Font = new Font("Segoe UI", 12f, FontStyle.Bold),
                 ForeColor = Color.Black,
+                Dock = DockStyle.Top,
                 AutoSize = true,
-                Location = new Point(15, 10)
+                UseMnemonic = false,
+                Margin = new Padding(0, 0, 0, 4)
             };
 
             Panel pnlFormula = new Panel
             {
                 Name = "pnlFormula",
-                Location = new Point(18, 40),
-                Size = new Size(1040, 32),
-                BackColor = Color.White,
-                BorderStyle = BorderStyle.FixedSingle
+                Dock = DockStyle.Top,
+                Height = 32,
+                BackColor = Color.FromArgb(245, 247, 250),
+                BorderStyle = BorderStyle.FixedSingle,
+                Margin = new Padding(0, 4, 0, 6)
             };
             Label lblFormula = new Label
             {
                 Name = "lblFormula",
                 Text = "📌 CÔNG THỨC:  Thực Lĩnh = (Lương Cơ Bản × Hệ Số Lương / 22) × Số Ngày Công + (Số Giờ OT × 50,000 VNĐ)",
                 Dock = DockStyle.Fill,
-                Font = new Font("Segoe UI", 9.5f, FontStyle.Bold),
+                Font = new Font("Segoe UI", 9f, FontStyle.Bold),
                 ForeColor = Color.Black,
                 TextAlign = ContentAlignment.MiddleLeft,
                 Padding = new Padding(10, 0, 0, 0)
             };
             pnlFormula.Controls.Add(lblFormula);
 
-            // Controls
-            Label lblThang = new Label { Name = "lblThang", Text = "Tháng:", Location = new Point(18, 92), AutoSize = true, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), ForeColor = Color.Black };
-            cboThang = new ComboBox { Name = "cboThang", Location = new Point(70, 88), Width = 70, DropDownStyle = ComboBoxStyle.DropDownList, BackColor = Color.White, ForeColor = Color.Black };
+            // Controls (FlowLayoutPanel)
+            FlowLayoutPanel pnlFilterActions = new FlowLayoutPanel
+            {
+                Dock = DockStyle.Top,
+                AutoSize = true,
+                FlowDirection = FlowDirection.LeftToRight,
+                WrapContents = true,
+                Padding = new Padding(0, 6, 0, 4),
+                BackColor = Color.White
+            };
+
+            Label lblThang = new Label { Name = "lblThang", Text = "Tháng:", Anchor = AnchorStyles.Left, AutoSize = true, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), ForeColor = Color.Black, Margin = new Padding(2, 6, 4, 6) };
+            cboThang = new ComboBox { Name = "cboThang", Width = 65, DropDownStyle = ComboBoxStyle.DropDownList, BackColor = Color.White, ForeColor = Color.Black, Margin = new Padding(2, 4, 8, 4) };
             for (int i = 1; i <= 12; i++) cboThang.Items.Add(i.ToString("D2"));
             cboThang.SelectedItem = DateTime.Today.Month.ToString("D2");
 
-            Label lblNam = new Label { Name = "lblNam", Text = "Năm:", Location = new Point(150, 92), AutoSize = true, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), ForeColor = Color.Black };
-            numNam = new NumericUpDown { Name = "numNam", Location = new Point(195, 88), Width = 80, Minimum = 2020, Maximum = 2050, Value = DateTime.Today.Year, BackColor = Color.White, ForeColor = Color.Black };
+            Label lblNam = new Label { Name = "lblNam", Text = "Năm:", Anchor = AnchorStyles.Left, AutoSize = true, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), ForeColor = Color.Black, Margin = new Padding(2, 6, 4, 6) };
+            numNam = new NumericUpDown { Name = "numNam", Width = 75, Minimum = 2020, Maximum = 2050, Value = DateTime.Today.Year, BackColor = Color.White, ForeColor = Color.Black, Margin = new Padding(2, 4, 10, 4) };
 
             btnTinhLuong = new Button
             {
                 Name = "btnTinhLuong",
                 Text = "⚡ Tính Lương Dự Kiến",
-                Location = new Point(285, 85),
                 Width = 165,
-                Height = 35,
+                Height = 34,
                 BackColor = Color.White,
                 ForeColor = Color.Black,
                 Font = new Font("Segoe UI", 9.5f, FontStyle.Bold),
-                FlatStyle = FlatStyle.System
+                FlatStyle = FlatStyle.System,
+                Margin = new Padding(2, 2, 6, 2)
             };
             btnTinhLuong.Click += (s, e) => TinhLuong();
 
@@ -110,14 +124,14 @@ namespace HRMPayrollSystem.GUI
             {
                 Name = "btnChotLuong",
                 Text = "🔒  CHỐT LƯƠNG THÁNG (SqlTransaction)",
-                Location = new Point(460, 85),
                 Width = 270,
-                Height = 35,
+                Height = 34,
                 BackColor = Color.White,
                 ForeColor = Color.Black,
                 Font = new Font("Segoe UI", 9.5f, FontStyle.Bold),
                 Cursor = Cursors.Hand,
-                FlatStyle = FlatStyle.System
+                FlatStyle = FlatStyle.System,
+                Margin = new Padding(2, 2, 6, 2)
             };
             btnChotLuong.Click += (s, e) => ChotLuong();
 
@@ -125,34 +139,37 @@ namespace HRMPayrollSystem.GUI
             {
                 Name = "btnXemDaChot",
                 Text = "📋 Xem Đã Chốt",
-                Location = new Point(740, 85),
-                Width = 145,
-                Height = 35,
+                Width = 135,
+                Height = 34,
                 BackColor = Color.White,
                 ForeColor = Color.Black,
                 Font = new Font("Segoe UI", 9f, FontStyle.Bold),
-                FlatStyle = FlatStyle.System
+                FlatStyle = FlatStyle.System,
+                Margin = new Padding(2, 2, 6, 2)
             };
             btnXemDaChot.Click += (s, e) => XemDaChot();
 
             btnXuatCSV = new Button
             {
                 Name = "btnXuatCSV",
-                Text = "Xuất CSV",
-                Location = new Point(895, 85),
+                Text = "📊 Xuất CSV",
                 Width = 110,
-                Height = 35,
+                Height = 34,
                 BackColor = Color.White,
                 ForeColor = Color.Black,
-                FlatStyle = FlatStyle.System
+                FlatStyle = FlatStyle.System,
+                Margin = new Padding(2, 2, 6, 2)
             };
             btnXuatCSV.Click += (s, e) => XuatCSV();
 
-            pnlTop.Controls.AddRange(new Control[] {
-                lblTitle, pnlFormula,
+            pnlFilterActions.Controls.AddRange(new Control[] {
                 lblThang, cboThang, lblNam, numNam,
                 btnTinhLuong, btnChotLuong, btnXemDaChot, btnXuatCSV
             });
+
+            pnlTop.Controls.Add(pnlFilterActions);
+            pnlTop.Controls.Add(pnlFormula);
+            pnlTop.Controls.Add(lblTitle);
 
             // Bottom Summary Panel (Nền trắng, chữ đen)
             Panel pnlBottom = new Panel { Name = "pnlBottom", Dock = DockStyle.Bottom, Height = 65, Padding = new Padding(15), BackColor = Color.White, BorderStyle = BorderStyle.FixedSingle };
