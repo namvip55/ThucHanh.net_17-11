@@ -104,9 +104,9 @@ namespace RetailSalesSystem.GUI
             };
             Label lblSearch = new Label { Name = "lblSearch", Text = "Tìm kiếm:", AutoSize = true, Anchor = AnchorStyles.Left, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), Margin = new Padding(2, 6, 6, 6) };
             txtTimKiem = new TextBox { Name = "txtTimKiem", Width = 300, PlaceholderText = "Nhập tên hoặc mã sản phẩm/mã vạch...", BackColor = Color.White, ForeColor = Color.Black, Margin = new Padding(3, 4, 8, 4) };
-            btnTimKiem = new Button { Name = "btnTimKiem", Text = "🔍 Tìm kiếm", Width = 100, Height = 30, BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System, Margin = new Padding(3, 3, 6, 3) };
-            btnTatCa = new Button { Name = "btnTatCa", Text = "🔄 Hiện tất cả", Width = 105, Height = 30, BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System, Margin = new Padding(3, 3, 6, 3) };
-            btnXuatCSV = new Button { Name = "btnXuatCSV", Text = "📊 Xuất CSV (Excel)", Width = 140, Height = 30, BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System, Margin = new Padding(3, 3, 6, 3) };
+            btnTimKiem = new Button { Name = "btnTimKiem", Text = "🔍 Tìm kiếm", Width = Dpi.Scale(100, this), Height = Dpi.Scale(30, this), BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System, Margin = new Padding(3, 3, 6, 3) };
+            btnTatCa = new Button { Name = "btnTatCa", Text = "🔄 Hiện tất cả", Width = Dpi.Scale(105, this), Height = Dpi.Scale(30, this), BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System, Margin = new Padding(3, 3, 6, 3) };
+            btnXuatCSV = new Button { Name = "btnXuatCSV", Text = "📊 Xuất CSV (Excel)", Width = Dpi.Scale(140, this), Height = Dpi.Scale(30, this), BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System, Margin = new Padding(3, 3, 6, 3) };
 
             btnTimKiem.Click += (s, e) => TimKiem();
             btnTatCa.Click += (s, e) => { txtTimKiem.Clear(); LoadData(); };
@@ -122,7 +122,8 @@ namespace RetailSalesSystem.GUI
                 Name = "grpInput",
                 Text = "Thông tin chi tiết sản phẩm",
                 Dock = DockStyle.Bottom,
-                Height = 175,
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 Padding = new Padding(10, 8, 10, 8),
                 BackColor = Color.White,
                 ForeColor = Color.Black
@@ -131,6 +132,8 @@ namespace RetailSalesSystem.GUI
             TableLayoutPanel tblInput = new TableLayoutPanel
             {
                 Dock = DockStyle.Fill,
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 ColumnCount = 4,
                 RowCount = 3
             };
@@ -138,6 +141,9 @@ namespace RetailSalesSystem.GUI
             tblInput.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 45F));
             tblInput.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
             tblInput.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 55F));
+            tblInput.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            tblInput.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            tblInput.RowStyles.Add(new RowStyle(SizeType.AutoSize));
 
             Label lblMa = new Label { Name = "lblMa", Text = "Mã SP:", Anchor = AnchorStyles.Left, AutoSize = true, Margin = new Padding(3, 6, 6, 6) };
             txtMaSP = new TextBox { Name = "txtMaSP", Dock = DockStyle.Fill, BackColor = Color.White, ForeColor = Color.Black, Margin = new Padding(3, 3, 15, 3) };
@@ -160,10 +166,10 @@ namespace RetailSalesSystem.GUI
             };
             tblInput.SetColumnSpan(pnlButtons, 4);
 
-            btnThem = new Button { Name = "btnThem", Text = "➕ Thêm mới", Width = 110, Height = 34, BackColor = Color.White, ForeColor = Color.Black, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), FlatStyle = FlatStyle.System, Margin = new Padding(0, 0, 8, 0) };
-            btnSua = new Button { Name = "btnSua", Text = "✏️ Cập nhật", Width = 110, Height = 34, BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System, Margin = new Padding(0, 0, 8, 0) };
-            btnXoa = new Button { Name = "btnXoa", Text = "🗑️ Xóa", Width = 100, Height = 34, BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System, Margin = new Padding(0, 0, 8, 0) };
-            btnLamMoi = new Button { Name = "btnLamMoi", Text = "🔄 Làm mới", Width = 110, Height = 34, BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System, Margin = new Padding(0, 0, 8, 0) };
+            btnThem = new Button { Name = "btnThem", Text = "➕ Thêm mới", Width = Dpi.Scale(110, this), Height = Dpi.Scale(34, this), BackColor = Color.White, ForeColor = Color.Black, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), FlatStyle = FlatStyle.System, Margin = new Padding(0, 0, 8, 0) };
+            btnSua = new Button { Name = "btnSua", Text = "✏️ Cập nhật", Width = Dpi.Scale(110, this), Height = Dpi.Scale(34, this), BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System, Margin = new Padding(0, 0, 8, 0) };
+            btnXoa = new Button { Name = "btnXoa", Text = "🗑️ Xóa", Width = Dpi.Scale(100, this), Height = Dpi.Scale(34, this), BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System, Margin = new Padding(0, 0, 8, 0) };
+            btnLamMoi = new Button { Name = "btnLamMoi", Text = "🔄 Làm mới", Width = Dpi.Scale(110, this), Height = Dpi.Scale(34, this), BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System, Margin = new Padding(0, 0, 8, 0) };
 
             btnThem.Click += (s, e) => Them();
             btnSua.Click += (s, e) => Sua();
@@ -213,6 +219,7 @@ namespace RetailSalesSystem.GUI
             dgvSanPham.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
             dgvSanPham.EnableHeadersVisualStyles = false;
             dgvSanPham.CellClick += DgvSanPham_CellClick;
+            Dpi.ConfigureGrid(dgvSanPham, this);
 
             ConfigureGridColumns();
 

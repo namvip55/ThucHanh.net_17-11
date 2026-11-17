@@ -67,8 +67,8 @@ namespace RetailSalesSystem.GUI
             {
                 Name = "btnXuatCSV",
                 Text = "📊 Xuất CSV Top 5",
-                Width = 145,
-                Height = 34,
+                Width = Dpi.Scale(145, this),
+                Height = Dpi.Scale(34, this),
                 BackColor = Color.White,
                 ForeColor = Color.Black,
                 Font = new Font("Segoe UI", 9.5f, FontStyle.Bold),
@@ -81,8 +81,8 @@ namespace RetailSalesSystem.GUI
             {
                 Name = "btnLamMoi",
                 Text = "🔄 Làm mới dữ liệu",
-                Width = 140,
-                Height = 34,
+                Width = Dpi.Scale(140, this),
+                Height = Dpi.Scale(34, this),
                 BackColor = Color.White,
                 ForeColor = Color.Black,
                 Font = new Font("Segoe UI", 9.5f, FontStyle.Bold),
@@ -99,7 +99,8 @@ namespace RetailSalesSystem.GUI
             {
                 Name = "tblCards",
                 Dock = DockStyle.Top,
-                Height = 125,
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 Padding = new Padding(10, 5, 10, 10),
                 BackColor = Color.White,
                 ColumnCount = 2,
@@ -107,6 +108,7 @@ namespace RetailSalesSystem.GUI
             };
             tblCards.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tblCards.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tblCards.RowStyles.Add(new RowStyle(SizeType.AutoSize));
 
             // Card 1: Doanh thu trong ngay
             Panel card1 = new Panel
@@ -206,6 +208,7 @@ namespace RetailSalesSystem.GUI
             dgvTop5.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(245, 245, 245);
             dgvTop5.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
             dgvTop5.EnableHeadersVisualStyles = false;
+            Dpi.ConfigureGrid(dgvTop5, this);
             grpTop5.Controls.Add(dgvTop5);
 
             this.Controls.Add(grpTop5);

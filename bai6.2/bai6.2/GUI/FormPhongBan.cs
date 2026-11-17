@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Drawing;
 using System.IO;
@@ -82,17 +82,18 @@ namespace HRMPayrollSystem.GUI
             {
                 Dock = DockStyle.Top,
                 AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 FlowDirection = FlowDirection.LeftToRight,
-                WrapContents = false,
+                WrapContents = true,
                 Padding = new Padding(10, 6, 10, 6),
                 BackColor = Color.FromArgb(250, 251, 253),
                 Name = "pnlSearch"
             };
             Label lblSearch = new Label { Name = "lblSearch", Text = "Tìm nhanh:", AutoSize = true, Anchor = AnchorStyles.Left, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), Margin = new Padding(2, 6, 6, 6) };
-            txtTimKiem = new TextBox { Name = "txtTimKiem", Width = 320, PlaceholderText = "Nhập tên phòng ban hoặc mô tả...", BackColor = Color.White, ForeColor = Color.Black, Margin = new Padding(3, 4, 8, 4) };
+            txtTimKiem = new TextBox { Name = "txtTimKiem", Width = Dpi.Scale(300, this), PlaceholderText = "Nhập tên phòng ban hoặc mô tả...", BackColor = Color.White, ForeColor = Color.Black, Margin = new Padding(3, 4, 8, 4) };
             txtTimKiem.TextChanged += (s, e) => TimKiemTucThoi();
 
-            btnXuatCSV = new Button { Name = "btnXuatCSV", Text = "📊 Xuất CSV (Excel)", Width = 140, Height = 30, BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System, Margin = new Padding(3, 3, 6, 3) };
+            btnXuatCSV = new Button { Name = "btnXuatCSV", Text = "📊 Xuất CSV (Excel)", Width = Dpi.Scale(150, this), Height = Dpi.Scale(32, this), BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System, Margin = new Padding(3, 3, 6, 3) };
             btnXuatCSV.Click += (s, e) => XuatCSV();
 
             pnlSearch.Controls.AddRange(new Control[] { lblSearch, txtTimKiem, btnXuatCSV });
@@ -103,7 +104,8 @@ namespace HRMPayrollSystem.GUI
                 Name = "grpInput",
                 Text = "Thông tin chi tiết phòng ban",
                 Dock = DockStyle.Bottom,
-                Height = 175,
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 Padding = new Padding(10, 8, 10, 8),
                 BackColor = Color.White,
                 ForeColor = Color.Black
@@ -111,7 +113,9 @@ namespace HRMPayrollSystem.GUI
 
             TableLayoutPanel tblInput = new TableLayoutPanel
             {
-                Dock = DockStyle.Fill,
+                Dock = DockStyle.Top,
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 ColumnCount = 4,
                 RowCount = 3
             };
@@ -119,6 +123,9 @@ namespace HRMPayrollSystem.GUI
             tblInput.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 35F));
             tblInput.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
             tblInput.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 65F));
+            tblInput.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            tblInput.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            tblInput.RowStyles.Add(new RowStyle(SizeType.AutoSize));
 
             Label lblMa = new Label { Name = "lblMa", Text = "Mã PB:", Anchor = AnchorStyles.Left, AutoSize = true, Margin = new Padding(3, 6, 6, 6) };
             txtMaPB = new TextBox { Name = "txtMaPB", Dock = DockStyle.Fill, ReadOnly = true, PlaceholderText = "(Tự sinh)", BackColor = Color.White, ForeColor = Color.Black, Margin = new Padding(3, 3, 15, 3) };
@@ -139,10 +146,10 @@ namespace HRMPayrollSystem.GUI
             };
             tblInput.SetColumnSpan(pnlButtons, 4);
 
-            btnThem = new Button { Name = "btnThem", Text = "➕ Thêm mới", Width = 110, Height = 34, BackColor = Color.White, ForeColor = Color.Black, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), FlatStyle = FlatStyle.System, Margin = new Padding(0, 0, 8, 0) };
-            btnSua = new Button { Name = "btnSua", Text = "✏️ Cập nhật", Width = 110, Height = 34, BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System, Margin = new Padding(0, 0, 8, 0) };
-            btnXoa = new Button { Name = "btnXoa", Text = "🗑️ Xóa", Width = 100, Height = 34, BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System, Margin = new Padding(0, 0, 8, 0) };
-            btnLamMoi = new Button { Name = "btnLamMoi", Text = "🔄 Làm mới", Width = 110, Height = 34, BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System, Margin = new Padding(0, 0, 8, 0) };
+            btnThem = new Button { Name = "btnThem", Text = "➕ Thêm mới", Width = Dpi.Scale(120, this), Height = Dpi.Scale(34, this), BackColor = Color.White, ForeColor = Color.Black, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), FlatStyle = FlatStyle.System, Margin = new Padding(0, 0, 8, 0) };
+            btnSua = new Button { Name = "btnSua", Text = "✏️ Cập nhật", Width = Dpi.Scale(120, this), Height = Dpi.Scale(34, this), BackColor = Color.White, ForeColor = Color.Black, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), FlatStyle = FlatStyle.System, Margin = new Padding(0, 0, 8, 0) };
+            btnXoa = new Button { Name = "btnXoa", Text = "🗑️ Xóa", Width = Dpi.Scale(110, this), Height = Dpi.Scale(34, this), BackColor = Color.White, ForeColor = Color.Black, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), FlatStyle = FlatStyle.System, Margin = new Padding(0, 0, 8, 0) };
+            btnLamMoi = new Button { Name = "btnLamMoi", Text = "🔄 Làm mới", Width = Dpi.Scale(120, this), Height = Dpi.Scale(34, this), BackColor = Color.White, ForeColor = Color.Black, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), FlatStyle = FlatStyle.System, Margin = new Padding(0, 0, 8, 0) };
 
             btnThem.Click += (s, e) => Them();
             btnSua.Click += (s, e) => Sua();
@@ -189,6 +196,7 @@ namespace HRMPayrollSystem.GUI
             dgvPhongBan.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(245, 245, 245);
             dgvPhongBan.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
             dgvPhongBan.EnableHeadersVisualStyles = false;
+            Dpi.ConfigureGrid(dgvPhongBan, this);
             dgvPhongBan.CellClick += DgvPhongBan_CellClick;
 
             ConfigureGridColumns();

@@ -93,7 +93,7 @@ namespace RetailSalesSystem.GUI
             txtTimKiem = new TextBox { Name = "txtTimKiem", Width = 320, PlaceholderText = "Nhập tên hoặc số điện thoại...", BackColor = Color.White, ForeColor = Color.Black, Margin = new Padding(3, 4, 8, 4) };
             txtTimKiem.TextChanged += (s, e) => TimKiemTucThoi();
 
-            btnXuatCSV = new Button { Name = "btnXuatCSV", Text = "📊 Xuất CSV (Excel)", Width = 140, Height = 30, BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System, Margin = new Padding(3, 3, 6, 3) };
+            btnXuatCSV = new Button { Name = "btnXuatCSV", Text = "📊 Xuất CSV (Excel)", Width = Dpi.Scale(140, this), Height = Dpi.Scale(30, this), BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System, Margin = new Padding(3, 3, 6, 3) };
             btnXuatCSV.Click += (s, e) => XuatCSV();
 
             pnlSearch.Controls.AddRange(new Control[] { lblSearch, txtTimKiem, btnXuatCSV });
@@ -104,7 +104,8 @@ namespace RetailSalesSystem.GUI
                 Name = "grpInput",
                 Text = "Thông tin nhân viên",
                 Dock = DockStyle.Bottom,
-                Height = 175,
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 Padding = new Padding(10, 8, 10, 8),
                 BackColor = Color.White,
                 ForeColor = Color.Black
@@ -113,6 +114,8 @@ namespace RetailSalesSystem.GUI
             TableLayoutPanel tblInput = new TableLayoutPanel
             {
                 Dock = DockStyle.Fill,
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 ColumnCount = 4,
                 RowCount = 3
             };
@@ -120,6 +123,9 @@ namespace RetailSalesSystem.GUI
             tblInput.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 45F));
             tblInput.ColumnStyles.Add(new ColumnStyle(SizeType.AutoSize));
             tblInput.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 55F));
+            tblInput.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            tblInput.RowStyles.Add(new RowStyle(SizeType.AutoSize));
+            tblInput.RowStyles.Add(new RowStyle(SizeType.AutoSize));
 
             Label lblMa = new Label { Name = "lblMa", Text = "Mã NV:", Anchor = AnchorStyles.Left, AutoSize = true, Margin = new Padding(3, 6, 6, 6) };
             txtMaNV = new TextBox { Name = "txtMaNV", Dock = DockStyle.Fill, ReadOnly = true, PlaceholderText = "(Tự sinh)", BackColor = Color.White, ForeColor = Color.Black, Margin = new Padding(3, 3, 15, 3) };
@@ -144,10 +150,10 @@ namespace RetailSalesSystem.GUI
             };
             tblInput.SetColumnSpan(pnlButtons, 4);
 
-            btnThem = new Button { Name = "btnThem", Text = "➕ Thêm mới", Width = 110, Height = 34, BackColor = Color.White, ForeColor = Color.Black, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), FlatStyle = FlatStyle.System, Margin = new Padding(0, 0, 8, 0) };
-            btnSua = new Button { Name = "btnSua", Text = "✏️ Cập nhật", Width = 110, Height = 34, BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System, Margin = new Padding(0, 0, 8, 0) };
-            btnXoa = new Button { Name = "btnXoa", Text = "🗑️ Xóa", Width = 100, Height = 34, BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System, Margin = new Padding(0, 0, 8, 0) };
-            btnLamMoi = new Button { Name = "btnLamMoi", Text = "🔄 Làm mới", Width = 110, Height = 34, BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System, Margin = new Padding(0, 0, 8, 0) };
+            btnThem = new Button { Name = "btnThem", Text = "➕ Thêm mới", Width = Dpi.Scale(110, this), Height = Dpi.Scale(34, this), BackColor = Color.White, ForeColor = Color.Black, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), FlatStyle = FlatStyle.System, Margin = new Padding(0, 0, 8, 0) };
+            btnSua = new Button { Name = "btnSua", Text = "✏️ Cập nhật", Width = Dpi.Scale(110, this), Height = Dpi.Scale(34, this), BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System, Margin = new Padding(0, 0, 8, 0) };
+            btnXoa = new Button { Name = "btnXoa", Text = "🗑️ Xóa", Width = Dpi.Scale(100, this), Height = Dpi.Scale(34, this), BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System, Margin = new Padding(0, 0, 8, 0) };
+            btnLamMoi = new Button { Name = "btnLamMoi", Text = "🔄 Làm mới", Width = Dpi.Scale(110, this), Height = Dpi.Scale(34, this), BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System, Margin = new Padding(0, 0, 8, 0) };
 
             btnThem.Click += (s, e) => Them();
             btnSua.Click += (s, e) => Sua();
@@ -196,6 +202,7 @@ namespace RetailSalesSystem.GUI
             dgvNhanVien.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
             dgvNhanVien.EnableHeadersVisualStyles = false;
             dgvNhanVien.CellClick += DgvNhanVien_CellClick;
+            Dpi.ConfigureGrid(dgvNhanVien, this);
 
             ConfigureGridColumns();
 

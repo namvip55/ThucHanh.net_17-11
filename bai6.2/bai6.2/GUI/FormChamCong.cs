@@ -80,19 +80,19 @@ namespace HRMPayrollSystem.GUI
             };
 
             Label lblThang = new Label { Name = "lblThang", Text = "Chọn Tháng:", Anchor = AnchorStyles.Left, AutoSize = true, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), ForeColor = Color.Black, Margin = new Padding(2, 6, 4, 6) };
-            cboThang = new ComboBox { Name = "cboThang", Width = 65, DropDownStyle = ComboBoxStyle.DropDownList, BackColor = Color.White, ForeColor = Color.Black, Margin = new Padding(2, 4, 10, 4) };
+            cboThang = new ComboBox { Name = "cboThang", Width = Dpi.Scale(70, this), DropDownStyle = ComboBoxStyle.DropDownList, BackColor = Color.White, ForeColor = Color.Black, Margin = new Padding(2, 4, 10, 4) };
             for (int i = 1; i <= 12; i++) cboThang.Items.Add(i.ToString("D2"));
             cboThang.SelectedItem = DateTime.Today.Month.ToString("D2");
 
             Label lblNam = new Label { Name = "lblNam", Text = "Năm:", Anchor = AnchorStyles.Left, AutoSize = true, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), ForeColor = Color.Black, Margin = new Padding(2, 6, 4, 6) };
-            numNam = new NumericUpDown { Name = "numNam", Width = 75, Minimum = 2020, Maximum = 2050, Value = DateTime.Today.Year, BackColor = Color.White, ForeColor = Color.Black, Margin = new Padding(2, 4, 12, 4) };
+            numNam = new NumericUpDown { Name = "numNam", Width = Dpi.Scale(85, this), Minimum = 2020, Maximum = 2050, Value = DateTime.Today.Year, BackColor = Color.White, ForeColor = Color.Black, Margin = new Padding(2, 4, 12, 4) };
 
             btnNapDuLieu = new Button
             {
                 Name = "btnNapDuLieu",
                 Text = "📥 Nạp Bảng Chấm Công",
-                Width = 175,
-                Height = 32,
+                Width = Dpi.Scale(185, this),
+                Height = Dpi.Scale(34, this),
                 BackColor = Color.White,
                 ForeColor = Color.Black,
                 Font = new Font("Segoe UI", 9f, FontStyle.Bold),
@@ -105,8 +105,8 @@ namespace HRMPayrollSystem.GUI
             {
                 Name = "btnLuuChamCong",
                 Text = "💾 LƯU CHẤM CÔNG (SqlCommandBuilder)",
-                Width = 275,
-                Height = 32,
+                Width = Dpi.Scale(290, this),
+                Height = Dpi.Scale(34, this),
                 BackColor = Color.White,
                 ForeColor = Color.Black,
                 Font = new Font("Segoe UI", 9.5f, FontStyle.Bold),
@@ -120,8 +120,8 @@ namespace HRMPayrollSystem.GUI
             {
                 Name = "btnXuatCSV",
                 Text = "📊 Xuất CSV",
-                Width = 110,
-                Height = 32,
+                Width = Dpi.Scale(120, this),
+                Height = Dpi.Scale(34, this),
                 BackColor = Color.White,
                 ForeColor = Color.Black,
                 FlatStyle = FlatStyle.System,
@@ -171,13 +171,15 @@ namespace HRMPayrollSystem.GUI
             dgvChamCong.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(245, 245, 245);
             dgvChamCong.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
             dgvChamCong.EnableHeadersVisualStyles = false;
+            Dpi.ConfigureGrid(dgvChamCong, this);
 
-            Panel pnlBottom = new Panel { Name = "pnlBottom", Dock = DockStyle.Bottom, Height = 40, Padding = new Padding(15, 8, 15, 8), BackColor = Color.White, BorderStyle = BorderStyle.FixedSingle };
+            Panel pnlBottom = new Panel { Name = "pnlBottom", Dock = DockStyle.Bottom, AutoSize = true, AutoSizeMode = AutoSizeMode.GrowAndShrink, Padding = new Padding(15, 8, 15, 8), BackColor = Color.White, BorderStyle = BorderStyle.FixedSingle };
             Label lblNote = new Label
             {
                 Name = "lblNote",
                 Text = "Hướng dẫn: Người dùng sửa trực tiếp 'Số ngày công' (<= 31) và 'Số giờ OT' trên lưới, sau đó ấn 'Lưu chấm công' để đồng bộ về CSDL trong 1 thao tác.",
                 Dock = DockStyle.Fill,
+                AutoSize = true,
                 Font = new Font("Segoe UI", 9f, FontStyle.Regular),
                 ForeColor = Color.DimGray
             };

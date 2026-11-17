@@ -32,8 +32,13 @@ namespace RetailSalesSystem.GUI
         {
             this.Text = "HỆ THỐNG QUẢN LÝ BÁN HÀNG & SIÊU THỊ MINI (RETAIL SALES SYSTEM)";
             this.Name = "MainForm";
-            this.Size = new Size(1180, 740);
-            this.MinimumSize = new Size(980, 600);
+            
+            // Tự động thích ứng kích thước theo màn hình làm việc (Hỗ trợ hoàn hảo scale 100% - 200%)
+            Rectangle workArea = Screen.PrimaryScreen?.WorkingArea ?? new Rectangle(0, 0, 1280, 800);
+            int targetW = Math.Min(1240, (int)(workArea.Width * 0.94));
+            int targetH = Math.Min(780, (int)(workArea.Height * 0.92));
+            this.Size = new Size(Math.Max(850, targetW), Math.Max(550, targetH));
+            this.MinimumSize = new Size(800, 500);
             this.StartPosition = FormStartPosition.CenterScreen;
             this.Font = new Font("Segoe UI", 9.5f, FontStyle.Regular);
             this.BackColor = Color.White;
@@ -58,14 +63,15 @@ namespace RetailSalesSystem.GUI
             };
             statusStrip.Items.AddRange(new ToolStripItem[] { lblSystemStatus, lblCurrentTime });
 
-            // Header (Nền trắng, chữ đen, viền dưới)
+            // Header (Nền trắng, chữ đen, viền dưới, AutoSize để luôn vừa vặn font 200%)
             pnlHeader = new Panel
             {
                 Name = "pnlHeader",
                 Dock = DockStyle.Top,
-                Height = 60,
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 BackColor = Color.White,
-                Padding = new Padding(15, 12, 15, 12),
+                Padding = new Padding(15, 10, 15, 10),
                 BorderStyle = BorderStyle.FixedSingle
             };
             lblHeaderTitle = new Label
@@ -73,7 +79,7 @@ namespace RetailSalesSystem.GUI
                 Name = "lblHeaderTitle",
                 Text = "HỆ THỐNG QUẢN LÝ BÁN HÀNG & SIÊU THỊ MINI",
                 ForeColor = Color.Black,
-                Font = new Font("Segoe UI", 13f, FontStyle.Bold),
+                Font = new Font("Segoe UI", 12.5f, FontStyle.Bold),
                 Dock = DockStyle.Left,
                 AutoSize = true,
                 UseMnemonic = false
@@ -83,22 +89,23 @@ namespace RetailSalesSystem.GUI
                 Name = "lblSubInfo",
                 Text = "Kiến trúc 3-Tier • SqlTransaction ACID • Phòng chống 100% SQL Injection",
                 ForeColor = Color.DimGray,
-                Font = new Font("Segoe UI", 9f, FontStyle.Regular),
+                Font = new Font("Segoe UI", 8.5f, FontStyle.Regular),
                 Dock = DockStyle.Right,
                 AutoSize = true,
                 UseMnemonic = false
             };
             pnlHeader.Controls.AddRange(new Control[] { lblHeaderTitle, lblSubInfo });
 
-            // Sidebar (Rộng 220px, có MinimumSize để không bao giờ bị bóp méo)
+            // Sidebar (Rộng tính theo DPI, không bao giờ bị cắt chữ)
+            int sidebarW = Dpi.Scale(230, this);
             pnlSidebar = new Panel
             {
                 Name = "pnlSidebar",
                 Dock = DockStyle.Left,
-                Width = 220,
-                MinimumSize = new Size(220, 0),
+                Width = sidebarW,
+                MinimumSize = new Size(sidebarW, 0),
                 BackColor = Color.White,
-                Padding = new Padding(8),
+                Padding = new Padding(6),
                 BorderStyle = BorderStyle.FixedSingle
             };
 
@@ -109,7 +116,7 @@ namespace RetailSalesSystem.GUI
                 ForeColor = Color.Black,
                 Font = new Font("Segoe UI", 9.5f, FontStyle.Bold),
                 Dock = DockStyle.Top,
-                Height = 36,
+                Height = Dpi.Scale(36, this),
                 TextAlign = ContentAlignment.MiddleLeft,
                 UseMnemonic = false
             };
@@ -120,7 +127,6 @@ namespace RetailSalesSystem.GUI
             btnNavNhanVien = CreateNavButton("btnNavNhanVien", "👔  Quản Lý Nhân Viên", () => OpenChildForm(new FormNhanVien(), "QUẢN LÝ DANH MỤC NHÂN VIÊN BÁN HÀNG"));
             btnNavBaoCao = CreateNavButton("btnNavBaoCao", "📊  Báo Cáo - Thống Kê", () => OpenChildForm(new FormBaoCao(), "BÁO CÁO DOANH THU & TOP 5 SẢN PHẨM BÁN CHẠY"));
 
-            // Thêm từ dưới lên theo Dock Top
             pnlSidebar.Controls.Add(btnNavBaoCao);
             pnlSidebar.Controls.Add(btnNavNhanVien);
             pnlSidebar.Controls.Add(btnNavKhachHang);
@@ -150,7 +156,7 @@ namespace RetailSalesSystem.GUI
                 Name = name,
                 Text = text,
                 Dock = DockStyle.Top,
-                Height = 46,
+                Height = Dpi.Scale(46, this),
                 FlatStyle = FlatStyle.Flat,
                 FlatAppearance = { BorderSize = 1, BorderColor = Color.LightGray },
                 ForeColor = Color.Black,

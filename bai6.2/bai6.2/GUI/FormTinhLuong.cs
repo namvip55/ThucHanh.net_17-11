@@ -99,19 +99,19 @@ namespace HRMPayrollSystem.GUI
             };
 
             Label lblThang = new Label { Name = "lblThang", Text = "Tháng:", Anchor = AnchorStyles.Left, AutoSize = true, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), ForeColor = Color.Black, Margin = new Padding(2, 6, 4, 6) };
-            cboThang = new ComboBox { Name = "cboThang", Width = 65, DropDownStyle = ComboBoxStyle.DropDownList, BackColor = Color.White, ForeColor = Color.Black, Margin = new Padding(2, 4, 8, 4) };
+            cboThang = new ComboBox { Name = "cboThang", Width = Dpi.Scale(70, this), DropDownStyle = ComboBoxStyle.DropDownList, BackColor = Color.White, ForeColor = Color.Black, Margin = new Padding(2, 4, 8, 4) };
             for (int i = 1; i <= 12; i++) cboThang.Items.Add(i.ToString("D2"));
             cboThang.SelectedItem = DateTime.Today.Month.ToString("D2");
 
             Label lblNam = new Label { Name = "lblNam", Text = "Năm:", Anchor = AnchorStyles.Left, AutoSize = true, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), ForeColor = Color.Black, Margin = new Padding(2, 6, 4, 6) };
-            numNam = new NumericUpDown { Name = "numNam", Width = 75, Minimum = 2020, Maximum = 2050, Value = DateTime.Today.Year, BackColor = Color.White, ForeColor = Color.Black, Margin = new Padding(2, 4, 10, 4) };
+            numNam = new NumericUpDown { Name = "numNam", Width = Dpi.Scale(85, this), Minimum = 2020, Maximum = 2050, Value = DateTime.Today.Year, BackColor = Color.White, ForeColor = Color.Black, Margin = new Padding(2, 4, 10, 4) };
 
             btnTinhLuong = new Button
             {
                 Name = "btnTinhLuong",
                 Text = "⚡ Tính Lương Dự Kiến",
-                Width = 165,
-                Height = 34,
+                Width = Dpi.Scale(175, this),
+                Height = Dpi.Scale(34, this),
                 BackColor = Color.White,
                 ForeColor = Color.Black,
                 Font = new Font("Segoe UI", 9.5f, FontStyle.Bold),
@@ -124,8 +124,8 @@ namespace HRMPayrollSystem.GUI
             {
                 Name = "btnChotLuong",
                 Text = "🔒  CHỐT LƯƠNG THÁNG (SqlTransaction)",
-                Width = 270,
-                Height = 34,
+                Width = Dpi.Scale(285, this),
+                Height = Dpi.Scale(34, this),
                 BackColor = Color.White,
                 ForeColor = Color.Black,
                 Font = new Font("Segoe UI", 9.5f, FontStyle.Bold),
@@ -139,8 +139,8 @@ namespace HRMPayrollSystem.GUI
             {
                 Name = "btnXemDaChot",
                 Text = "📋 Xem Đã Chốt",
-                Width = 135,
-                Height = 34,
+                Width = Dpi.Scale(140, this),
+                Height = Dpi.Scale(34, this),
                 BackColor = Color.White,
                 ForeColor = Color.Black,
                 Font = new Font("Segoe UI", 9f, FontStyle.Bold),
@@ -153,8 +153,8 @@ namespace HRMPayrollSystem.GUI
             {
                 Name = "btnXuatCSV",
                 Text = "📊 Xuất CSV",
-                Width = 110,
-                Height = 34,
+                Width = Dpi.Scale(120, this),
+                Height = Dpi.Scale(34, this),
                 BackColor = Color.White,
                 ForeColor = Color.Black,
                 FlatStyle = FlatStyle.System,
@@ -172,33 +172,44 @@ namespace HRMPayrollSystem.GUI
             pnlTop.Controls.Add(lblTitle);
 
             // Bottom Summary Panel (Nền trắng, chữ đen)
-            Panel pnlBottom = new Panel { Name = "pnlBottom", Dock = DockStyle.Bottom, Height = 65, Padding = new Padding(15), BackColor = Color.White, BorderStyle = BorderStyle.FixedSingle };
+            FlowLayoutPanel pnlBottom = new FlowLayoutPanel
+            {
+                Name = "pnlBottom",
+                Dock = DockStyle.Bottom,
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                FlowDirection = FlowDirection.LeftToRight,
+                WrapContents = true,
+                Padding = new Padding(15, 10, 15, 10),
+                BackColor = Color.White,
+                BorderStyle = BorderStyle.FixedSingle
+            };
             lblTongNhanVien = new Label
             {
                 Name = "lblTongNhanVien",
                 Text = "Tổng nhân sự: 0",
-                Location = new Point(20, 20),
                 AutoSize = true,
                 Font = new Font("Segoe UI", 11f, FontStyle.Bold),
-                ForeColor = Color.Black
+                ForeColor = Color.Black,
+                Margin = new Padding(0, 4, 30, 4)
             };
             lblTongQuyLuong = new Label
             {
                 Name = "lblTongQuyLuong",
                 Text = "TỔNG QUỸ LƯƠNG: 0 VNĐ",
-                Location = new Point(250, 18),
                 AutoSize = true,
-                Font = new Font("Segoe UI", 13f, FontStyle.Bold),
-                ForeColor = Color.Black
+                Font = new Font("Segoe UI", 12f, FontStyle.Bold),
+                ForeColor = Color.Black,
+                Margin = new Padding(0, 3, 30, 4)
             };
             lblTrangThaiKhoa = new Label
             {
                 Name = "lblTrangThaiKhoa",
                 Text = "",
-                Location = new Point(750, 20),
                 AutoSize = true,
                 Font = new Font("Segoe UI", 11f, FontStyle.Bold),
-                ForeColor = Color.Black
+                ForeColor = Color.Black,
+                Margin = new Padding(0, 4, 10, 4)
             };
             pnlBottom.Controls.AddRange(new Control[] { lblTongNhanVien, lblTongQuyLuong, lblTrangThaiKhoa });
 
@@ -228,6 +239,7 @@ namespace HRMPayrollSystem.GUI
             dgvLuong.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(245, 245, 245);
             dgvLuong.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
             dgvLuong.EnableHeadersVisualStyles = false;
+            Dpi.ConfigureGrid(dgvLuong, this);
 
             pnlGrid.Controls.Add(dgvLuong);
 

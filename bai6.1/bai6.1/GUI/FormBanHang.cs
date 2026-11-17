@@ -132,9 +132,9 @@ namespace RetailSalesSystem.GUI
             };
             tblTop.SetColumnSpan(pnlItemButtons, 4);
 
-            btnThemVaoGio = new Button { Name = "btnThemVaoGio", Text = "➕ Thêm vào giỏ", Width = 140, Height = 32, BackColor = Color.White, ForeColor = Color.Black, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), FlatStyle = FlatStyle.System, Margin = new Padding(0, 0, 8, 0) };
-            btnXoaKhoiGio = new Button { Name = "btnXoaKhoiGio", Text = "🗑️ Xóa chọn", Width = 110, Height = 32, BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System, Margin = new Padding(0, 0, 8, 0) };
-            btnXoaHet = new Button { Name = "btnXoaHet", Text = "🧹 Xóa hết giỏ", Width = 110, Height = 32, BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System, Margin = new Padding(0, 0, 8, 0) };
+            btnThemVaoGio = new Button { Name = "btnThemVaoGio", Text = "➕ Thêm vào giỏ", Width = Dpi.Scale(140, this), Height = Dpi.Scale(34, this), BackColor = Color.White, ForeColor = Color.Black, Font = new Font("Segoe UI", 9.5f, FontStyle.Bold), FlatStyle = FlatStyle.System, Margin = new Padding(0, 0, 8, 0) };
+            btnXoaKhoiGio = new Button { Name = "btnXoaKhoiGio", Text = "🗑️ Xóa chọn", Width = Dpi.Scale(110, this), Height = Dpi.Scale(34, this), BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System, Margin = new Padding(0, 0, 8, 0) };
+            btnXoaHet = new Button { Name = "btnXoaHet", Text = "🧹 Xóa hết giỏ", Width = Dpi.Scale(110, this), Height = Dpi.Scale(34, this), BackColor = Color.White, ForeColor = Color.Black, FlatStyle = FlatStyle.System, Margin = new Padding(0, 0, 8, 0) };
 
             btnThemVaoGio.Click += (s, e) => ThemVaoGio();
             btnXoaKhoiGio.Click += (s, e) => XoaKhoiGio();
@@ -170,6 +170,7 @@ namespace RetailSalesSystem.GUI
             dgvGioHang.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(245, 245, 245);
             dgvGioHang.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
             dgvGioHang.EnableHeadersVisualStyles = false;
+            Dpi.ConfigureGrid(dgvGioHang, this);
 
             // Khởi tạo cột sẵn cho Giỏ Hàng
             dgvGioHang.Columns.Add(new DataGridViewTextBoxColumn { Name = "colMaSP", DataPropertyName = "MaSP", HeaderText = "Mã Sản Phẩm", FillWeight = 15 });
@@ -183,7 +184,8 @@ namespace RetailSalesSystem.GUI
             {
                 Name = "tblBottom",
                 Dock = DockStyle.Bottom,
-                Height = 75,
+                AutoSize = true,
+                AutoSizeMode = AutoSizeMode.GrowAndShrink,
                 Padding = new Padding(12, 8, 12, 8),
                 BackColor = Color.FromArgb(250, 251, 253),
                 BorderStyle = BorderStyle.FixedSingle,
@@ -192,7 +194,7 @@ namespace RetailSalesSystem.GUI
             };
             tblBottom.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tblBottom.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tblBottom.RowStyles.Add(new RowStyle(SizeType.Percent, 100F));
+            tblBottom.RowStyles.Add(new RowStyle(SizeType.AutoSize));
 
             FlowLayoutPanel pnlLeftTotal = new FlowLayoutPanel
             {
@@ -224,7 +226,7 @@ namespace RetailSalesSystem.GUI
             {
                 Dock = DockStyle.Fill,
                 FlowDirection = FlowDirection.RightToLeft,
-                WrapContents = false,
+                WrapContents = true,
                 AutoSize = true
             };
 
@@ -232,8 +234,8 @@ namespace RetailSalesSystem.GUI
             {
                 Name = "btnTestRollback",
                 Text = "Thử Mua Quá Tồn\n(Rollback)",
-                Width = 160,
-                Height = 50,
+                Width = Dpi.Scale(160, this),
+                Height = Dpi.Scale(50, this),
                 BackColor = Color.White,
                 ForeColor = Color.Black,
                 Font = new Font("Segoe UI", 8.5f, FontStyle.Bold),
@@ -246,8 +248,8 @@ namespace RetailSalesSystem.GUI
             {
                 Name = "btnThanhToan",
                 Text = "💳 THANH TOÁN\n(SqlTransaction)",
-                Width = 210,
-                Height = 50,
+                Width = Dpi.Scale(210, this),
+                Height = Dpi.Scale(50, this),
                 BackColor = Color.White,
                 ForeColor = Color.Black,
                 Font = new Font("Segoe UI", 10f, FontStyle.Bold),
@@ -294,6 +296,7 @@ namespace RetailSalesSystem.GUI
             dgvHoaDon.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
             dgvHoaDon.EnableHeadersVisualStyles = false;
             dgvHoaDon.CellClick += DgvHoaDon_CellClick;
+            Dpi.ConfigureGrid(dgvHoaDon, this);
             grpHD.Controls.Add(dgvHoaDon);
 
             GroupBox grpCT = new GroupBox { Name = "grpCT", Text = "Chi tiết hóa đơn được chọn", Dock = DockStyle.Fill, Padding = new Padding(8), BackColor = Color.White, ForeColor = Color.Black };
@@ -319,6 +322,7 @@ namespace RetailSalesSystem.GUI
             dgvChiTietHD.ColumnHeadersDefaultCellStyle.BackColor = Color.FromArgb(245, 245, 245);
             dgvChiTietHD.ColumnHeadersDefaultCellStyle.ForeColor = Color.Black;
             dgvChiTietHD.EnableHeadersVisualStyles = false;
+            Dpi.ConfigureGrid(dgvChiTietHD, this);
             grpCT.Controls.Add(dgvChiTietHD);
 
             splitLichSu.Panel1.Controls.Add(grpHD);
